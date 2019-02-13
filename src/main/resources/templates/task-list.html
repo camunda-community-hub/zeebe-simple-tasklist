@@ -1,0 +1,24 @@
+<div class="mb-2">
+	<h5>{{count}} tasks</h5>
+</div>
+
+<div class="mb-2">
+	<div class="list-group">
+
+		{{#tasks}}
+		  <a href="/views/tasks/{{key}}" class="list-group-item list-group-item-action flex-column align-items-start 
+		  	{{#active}} active {{/active}}" >
+		  	
+		    <small>Key: {{key}}</small>
+		    <div class="d-flex w-100 justify-content-between">
+		      <h4 class="mb-1">{{name}}</h4>
+		      <small>{{created}} ago</small>
+		    </div>
+		    <h6 class="mb-1">{{description}}</h6>
+		  </a>
+		{{/tasks}}
+
+	</div>
+</div>
+
+{{>components/table-pagination}}

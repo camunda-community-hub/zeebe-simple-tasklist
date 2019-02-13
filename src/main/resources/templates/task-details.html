@@ -1,0 +1,31 @@
+{{#task}}
+
+	<div class="border-bottom mb-2">
+		<h6>Key: {{key}}</h6>
+		
+		<div class="d-flex w-100 justify-content-between">
+	    <h1 class="mb-1">{{name}}</h1>
+	    <h6>{{created}} ago</h6>
+	  </div>
+	  
+	  <h5>{{description}}</h5>
+  </div>
+
+	<div>
+		{{{taskForm}}}
+		
+		<button type="button" class="btn btn-primary" onclick="completeTask({{key}})">
+		  Complete
+		</button>
+	</div>
+
+{{/task}}
+
+{{^task}}
+	<div class="d-flex justify-content-center">
+		<div>
+			<span class="h3">No task selected.</span>
+			<p>Select one from the list.</p>
+		</div>
+	</div>
+{{/task}}

@@ -1,0 +1,41 @@
+<ul class="nav nav-tabs mb-2" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="inputs-tab" data-toggle="tab" href="#inputs" role="tab" aria-controls="home" aria-selected="true">Form</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="data-tab" data-toggle="tab" href="#data" role="tab" aria-controls="profile" aria-selected="false">Variables</a>
+  </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="inputs" role="tabpanel" aria-labelledby="inputs-tab">
+  	<form>
+			{{#taskInputs}}
+				 <div class="form-group">
+			    <label>{{key}}</label>
+			    <input type="text" id="form_{{key}}" class="form-control task-form">
+			  </div>
+			{{/taskInputs}}
+			
+			{{^taskInputs}}
+				<p>No form defined.</p>				
+			{{/taskInputs}}
+		</form>
+  </div>
+  
+  <div class="tab-pane fade" id="data" role="tabpanel" aria-labelledby="data-tab">
+  	<form>
+			{{#taskData}}
+				 <div class="form-group">
+			    <label>{{key}}</label>
+			    <input type="text" class="form-control" value="{{value}}" readonly>
+			  </div>
+			{{/taskData}}
+			
+			{{^taskData}}
+				<p>No variables available.</p>
+			{{/taskData}}
+		</form>
+  </div>
+  
+</div>
