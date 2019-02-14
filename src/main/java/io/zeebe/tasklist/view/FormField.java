@@ -1,5 +1,7 @@
 package io.zeebe.tasklist.view;
 
+import java.util.Optional;
+
 public class FormField {
 
   private String key;
@@ -15,7 +17,7 @@ public class FormField {
   }
 
   public String getLabel() {
-    return label;
+    return Optional.ofNullable(label).orElse(key);
   }
 
   public void setLabel(String label) {

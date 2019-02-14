@@ -90,6 +90,8 @@ public class ViewController {
                     .ifPresent(
                         formData -> {
                           final List<FormField> formFields = serializer.readFormFields(formData);
+                          formFields.forEach(this::setInputTypeOfFormField);
+
                           templateData.put("formFields", formFields);
                         });
 
@@ -110,6 +112,23 @@ public class ViewController {
     addPaginationToModel(model, pageable, count);
 
     return "task-list-view";
+  }
+
+  private void setInputTypeOfFormField(FormField field) {
+    switch (field.getType()) {
+      case "string":
+        field.setType("text");
+        break;
+      case "number":
+        field.setType("number");
+        break;
+      case "boolean":
+        field.setType("checkbox");
+        break;
+      default:
+        field.setType("text");
+        break;
+    }
   }
 
   private TaskDto toDto(TaskEntity entity) {

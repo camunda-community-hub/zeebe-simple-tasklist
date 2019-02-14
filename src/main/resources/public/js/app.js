@@ -30,7 +30,7 @@ function reload() {
 }
 
 // --------------------------------------------------------------------
-	
+
 function completeTask(taskKey) {
 
 	var formInputs = $(".task-form");
@@ -50,6 +50,10 @@ function completeTask(taskKey) {
 		data[i] = { key: key, value: value };
 	}
 
+	completeTaskWithData(taskKey, data);
+}	
+	
+function completeTaskWithData(taskKey, data) {
 	$.ajax({
        type : 'PUT',
        url: '/api/tasks/' + taskKey + '/complete',

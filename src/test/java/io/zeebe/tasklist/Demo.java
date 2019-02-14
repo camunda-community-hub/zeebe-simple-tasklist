@@ -30,7 +30,7 @@ public class Demo {
                         .zeebeTaskHeader("description", "Task with string field")
                         .zeebeTaskHeader(
                             "formData",
-                            "[{\"key\":\"x\", \"label\":\"any string\", \"type\":\"text\"}]"))
+                            "[{\"key\":\"x\", \"label\":\"any string\", \"type\":\"string\"}]"))
             .serviceTask(
                 "task_number_field",
                 t ->
@@ -48,7 +48,16 @@ public class Demo {
                         .zeebeTaskHeader("description", "Task with boolean field")
                         .zeebeTaskHeader(
                             "formData",
-                            "[{\"key\":\"z\", \"label\":\"any boolean\", \"type\":\"checkbox\"}]"))
+                            "[{\"key\":\"z\", \"label\":\"any boolean\", \"type\":\"boolean\"}]"))
+            .serviceTask(
+                "task_multiple_field",
+                t ->
+                    t.zeebeTaskType("user")
+                        .zeebeTaskHeader("name", "Task 6")
+                        .zeebeTaskHeader("description", "Task with mulitple fields")
+                        .zeebeTaskHeader(
+                            "formData",
+                            "[{\"key\":\"i1\", \"label\":\"any string\", \"type\":\"string\"}, {\"key\":\"i2\", \"label\":\"any number\", \"type\":\"boolean\"}]"))
             .done();
 
     client
