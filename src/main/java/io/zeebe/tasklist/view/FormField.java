@@ -1,23 +1,21 @@
 package io.zeebe.tasklist.view;
 
-import java.util.Optional;
-
 public class FormField {
 
-  private String id;
+  private String key;
   private String label;
   private String type = "text";
 
-  public String getId() {
-    return id;
+  public String getKey() {
+    return key;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setKey(String key) {
+    this.key = key;
   }
 
   public String getLabel() {
-    return Optional.ofNullable(label).orElse(id);
+    return label;
   }
 
   public void setLabel(String label) {
