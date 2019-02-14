@@ -1,11 +1,10 @@
-package io.zeebe.tasklist;
+package io.zeebe.tasklist.view;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
+import io.zeebe.tasklist.TaskDataSerializer;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
-import io.zeebe.tasklist.view.TaskDto;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URI;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ViewController {
+
+  private final TaskDataSerializer serializer = new TaskDataSerializer();
 
   @Autowired private TaskRepository repository;
 
@@ -40,9 +42,10 @@ public class ViewController {
 
     final long count = repository.count();
 
-    final List<Object> tasks = new ArrayList<>();
+    final List<TaskDto> tasks = new ArrayList<>();
     for (TaskEntity job : repository.findAll(pageable)) {
-      tasks.add(job);
+      final TaskDto dto = toDto(job);
+      tasks.add(dto);
     }
 
     model.put("tasks", tasks);
@@ -71,11 +74,6 @@ public class ViewController {
         .findById(key)
         .ifPresent(
             task -> {
-              //              final String formKey = ;
-              //                  Optional.ofNullable(task.getFormKey()).orElse("default.html");
-
-              final ObjectMapper objectMapper = new ObjectMapper();
-
               try {
                 final URI uri = getClass().getResource("/default.html").toURI();
                 final Path path = Paths.get(uri);
@@ -83,14 +81,20 @@ public class ViewController {
                 final BufferedReader reader = Files.newBufferedReader(path);
                 final Template tmpl = Mustache.compiler().compile(reader);
 
-                final Map taskPayload = objectMapper.readValue(task.getPayload(), Map.class);
-
                 final Map<String, Object> templateData = new HashMap<>();
-                templateData.putAll(taskPayload);
-                templateData.put("taskData", taskPayload.entrySet());
 
-                final String form = tmpl.execute(templateData);
-                model.put("taskForm", form);
+                final Map<String, Object> taskPayload = serializer.readVariables(task.getPayload());
+                templateData.put("variables", taskPayload.entrySet());
+
+                Optional.ofNullable(task.getFormData())
+                    .ifPresent(
+                        formData -> {
+                          final List<FormField> formFields = serializer.readFormFields(formData);
+                          templateData.put("formFields", formFields);
+                        });
+
+                final String taskForm = tmpl.execute(templateData);
+                model.put("taskForm", taskForm);
 
               } catch (IOException | URISyntaxException e) {
                 // TODO Auto-generated catch block
@@ -113,7 +117,7 @@ public class ViewController {
 
     dto.setKey(entity.getKey());
     dto.setName(entity.getName());
-    dto.setDescription("foobar"); // TODO description
+    dto.setDescription(entity.getDescription());
 
     final Instant created = Instant.ofEpochMilli(entity.getTimestamp());
     final Duration duration = Duration.between(created, Instant.now());

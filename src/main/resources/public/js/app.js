@@ -31,7 +31,7 @@ function reload() {
 
 // --------------------------------------------------------------------
 	
-function completeTask(key) {
+function completeTask(taskKey) {
 
 	var formInputs = $(".task-form");
 	
@@ -41,12 +41,18 @@ function completeTask(key) {
 		var key = formInput.id.substr("form_".length);
 		var value = formInput.value;
 		
+		if (formInput.type == "number") {
+			value = Number(value)
+		} else if (formInput.type == "checkbox") {
+			value = Boolean(formInput.checked)
+		}
+		
 		data[i] = { key: key, value: value };
 	}
 
 	$.ajax({
        type : 'PUT',
-       url: '/api/tasks/' + key + '/complete',
+       url: '/api/tasks/' + taskKey + '/complete',
        data:  JSON.stringify(data),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {

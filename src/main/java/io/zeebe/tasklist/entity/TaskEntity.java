@@ -35,11 +35,11 @@ public class TaskEntity {
   @Column(name = "NAME_")
   private String name;
 
-  @Column(name = "FORM_KEY_")
-  private String formKey;
+  @Column(name = "DESCRIPTION_")
+  private String description;
 
-  @Column(name = "ASSIGNE_")
-  private String assigne;
+  @Column(name = "FORM_DATA_")
+  private String formData;
 
   public long getKey() {
     return key;
@@ -65,14 +65,6 @@ public class TaskEntity {
     this.payload = payload;
   }
 
-  public String getFormKey() {
-    return formKey;
-  }
-
-  public void setFormKey(String formKey) {
-    this.formKey = formKey;
-  }
-
   public String getName() {
     return name;
   }
@@ -81,11 +73,19 @@ public class TaskEntity {
     this.name = name;
   }
 
-  public String getAssigne() {
-    return assigne;
+  public String getDescription() {
+    return description;
   }
 
-  public void setAssigne(String assigne) {
-    this.assigne = assigne;
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getFormData() {
+    return formData;
+  }
+
+  public void setFormData(String formData) {
+    this.formData = formData;
   }
 }

@@ -36,7 +36,7 @@ public class ZeebeClientService {
         .newWorker()
         .jobType("user")
         .handler(jobHandler)
-        .name("simple-tasklist")
+        .name("zeebe-simple-tasklist")
         .timeout(Duration.ofDays(365))
         .open();
   }

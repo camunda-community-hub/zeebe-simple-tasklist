@@ -8,11 +8,14 @@ import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserTaskJobHandler implements JobHandler {
+
+  private final TaskDataSerializer serializer = new TaskDataSerializer();
 
   @Autowired private TaskRepository repository;
 
@@ -30,11 +33,18 @@ public class UserTaskJobHandler implements JobHandler {
     final String name = (String) customHeaders.getOrDefault("name", headers.getElementId());
     entity.setName(name);
 
-    final String formKey = (String) customHeaders.get("form-key");
-    entity.setFormKey(formKey);
+    final String description = (String) customHeaders.getOrDefault("description", "");
+    entity.setDescription(description);
 
-    final String assigne = (String) customHeaders.get("assigne");
-    entity.setAssigne(assigne);
+    Optional.ofNullable((String) customHeaders.get("formData"))
+        .ifPresent(
+            formData -> {
+
+              // validate form-data
+              serializer.readFormFields(formData);
+
+              entity.setFormData(formData);
+            });
 
     repository.save(entity);
   }
