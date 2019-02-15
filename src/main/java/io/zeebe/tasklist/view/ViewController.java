@@ -5,12 +5,10 @@ import com.samskivert.mustache.Template;
 import io.zeebe.tasklist.TaskDataSerializer;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
@@ -19,7 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,30 @@ public class ViewController {
 
   private final TaskDataSerializer serializer = new TaskDataSerializer();
 
+  @Value("${io.zeebe.tasklist.defaultTaskForm}")
+  private String defaultTaskForm;
+
   @Autowired private TaskRepository repository;
+
+  private Template taskTemplate;
+
+  @PostConstruct
+  public void loadTemplate() {
+    try {
+      final InputStream inputStream = getClass().getResourceAsStream(defaultTaskForm);
+
+      final Reader reader;
+      if (inputStream != null) {
+        reader = new InputStreamReader(inputStream);
+      } else {
+        reader = Files.newBufferedReader(Paths.get(defaultTaskForm));
+      }
+
+      taskTemplate = Mustache.compiler().compile(reader);
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to load default task templete", e);
+    }
+  }
 
   @GetMapping("/")
   public String index(Map<String, Object> model, @PageableDefault(size = 10) Pageable pageable) {
@@ -78,11 +101,6 @@ public class ViewController {
         .ifPresent(
             task -> {
               try {
-                final URI uri = getClass().getResource("/templates/default-task-form.html").toURI();
-                final Path path = Paths.get(uri);
-
-                final BufferedReader reader = Files.newBufferedReader(path);
-                final Template tmpl = Mustache.compiler().compile(reader);
 
                 final Map<String, Object> templateData = new HashMap<>();
 
@@ -98,10 +116,10 @@ public class ViewController {
                           templateData.put("formFields", formFields);
                         });
 
-                final String taskForm = tmpl.execute(templateData);
+                final String taskForm = taskTemplate.execute(templateData);
                 model.put("taskForm", taskForm);
 
-              } catch (IOException | URISyntaxException e) {
+              } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
               }
