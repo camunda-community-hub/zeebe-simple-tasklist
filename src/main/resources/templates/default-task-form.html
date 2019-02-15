@@ -58,7 +58,7 @@
 				value = Boolean(formInput.checked)
 			}
 			
-			data[i] = { key: "{{key}}", value: value };
+			data.push({ key: "{{key}}", value: value });
 		{{/formFields}}
 	
 		completeTask(data);

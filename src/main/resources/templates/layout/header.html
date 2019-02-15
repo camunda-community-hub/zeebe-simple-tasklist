@@ -5,7 +5,7 @@
     <meta http-equiv=X-UA-Compatible content="IE=edge">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
-    <title> Zeebe Simple Tasklist </title>
+    <title>Zeebe Simple Tasklist</title>
     
     <!-- bpmn-js viewer -->
     <link type="text/css" rel="stylesheet" href="/css/modeler.css"/>
@@ -16,6 +16,13 @@
 		<link rel="stylesheet" type="text/css" href="/css/app.css" />
 
     <link rel=icon href="/img/favicon.ico">
+    
+    <script>
+    	var count = {{count}};
+    	if (count > 0) {
+    		document.title = '(' + count + ') ' + document.title;
+    	}    
+    </script>
     
 </head>
 
