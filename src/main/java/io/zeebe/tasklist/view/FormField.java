@@ -7,7 +7,7 @@ public class FormField {
   private String key;
   private String label;
   private String type = "text";
-  private boolean required = true;
+  private boolean required = false;
 
   public String getKey() {
     return key;

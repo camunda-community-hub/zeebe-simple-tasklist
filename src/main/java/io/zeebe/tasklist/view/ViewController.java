@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,12 +34,12 @@ public class ViewController {
   @Autowired private TaskRepository repository;
 
   @GetMapping("/")
-  public String index(Map<String, Object> model, Pageable pageable) {
+  public String index(Map<String, Object> model, @PageableDefault(size = 10) Pageable pageable) {
     return taskList(model, pageable);
   }
 
   @GetMapping("/views/tasks")
-  public String taskList(Map<String, Object> model, Pageable pageable) {
+  public String taskList(Map<String, Object> model, @PageableDefault(size = 10) Pageable pageable) {
 
     final long count = repository.count();
 
@@ -58,7 +59,9 @@ public class ViewController {
 
   @GetMapping("/views/tasks/{key}")
   public String taskList(
-      @PathVariable("key") long key, Map<String, Object> model, Pageable pageable) {
+      @PathVariable("key") long key,
+      Map<String, Object> model,
+      @PageableDefault(size = 10) Pageable pageable) {
 
     final long count = repository.count();
 
@@ -75,7 +78,7 @@ public class ViewController {
         .ifPresent(
             task -> {
               try {
-                final URI uri = getClass().getResource("/default.html").toURI();
+                final URI uri = getClass().getResource("/templates/default-task-form.html").toURI();
                 final Path path = Paths.get(uri);
 
                 final BufferedReader reader = Files.newBufferedReader(path);
