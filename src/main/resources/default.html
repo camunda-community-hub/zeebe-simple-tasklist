@@ -13,7 +13,7 @@
 			{{#formFields}}
 				 <div class="form-group">
 			    <label>{{label}}</label>
-			    <input type="{{type}}" id="form_{{key}}" class="form-control task-form">
+			    <input type="{{type}}" id="form_{{key}}" class="form-control task-form {{#required}}task-field-required{{/required}}">
 			  </div>
 			{{/formFields}}
 			
@@ -53,11 +53,17 @@
 			var formInput = formInputs[i];
 			var key = formInput.id.substr("form_".length);
 			var value = formInput.value;
+			var isRequired = formInput.className.indexOf("task-field-required") !== -1;
 			
 			if (formInput.type == "number") {
 				value = Number(value)
 			} else if (formInput.type == "checkbox") {
 				value = Boolean(formInput.checked)
+			}
+			
+			if (isRequired && !value) {
+				showError("A required field is not filled.");
+				return;
 			}
 			
 			data[i] = { key: key, value: value };

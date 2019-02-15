@@ -7,6 +7,7 @@ public class FormField {
   private String key;
   private String label;
   private String type = "text";
+  private boolean required = true;
 
   public String getKey() {
     return key;
@@ -30,5 +31,13 @@ public class FormField {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public boolean isRequired() {
+    return required;
+  }
+
+  public void setRequired(boolean required) {
+    this.required = required;
   }
 }
