@@ -122,6 +122,8 @@ public class ViewController {
               } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+
+                model.put("taskForm", "???");
               }
 
               model.put("task", toDto(task));

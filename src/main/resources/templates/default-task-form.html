@@ -46,12 +46,10 @@
 
 <script>
 	function complete() {
-		var formInputs = $(".task-form");
-		
 		var data = [];
-		for (i = 0; i < formInputs.length; i++) {
-			var formInput = formInputs[i];
-			var key = formInput.id.substr("form_".length);
+		
+		{{#formFields}}
+			var formInput = document.getElementById("form_{{key}}");
 			var value = formInput.value;
 			
 			if (formInput.type == "number") {
@@ -60,8 +58,8 @@
 				value = Boolean(formInput.checked)
 			}
 			
-			data[i] = { key: key, value: value };
-		}
+			data[i] = { key: "{{key}}", value: value };
+		{{/formFields}}
 	
 		completeTask(data);
 	}	
