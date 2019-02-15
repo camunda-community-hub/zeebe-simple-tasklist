@@ -6,7 +6,7 @@
 	<div class="list-group">
 
 		{{#tasks}}
-		  <a href="/views/tasks/{{key}}" class="list-group-item list-group-item-action flex-column align-items-start 
+		  <a href="/views/tasks/{{key}}?page={{currentPage}}" class="list-group-item list-group-item-action flex-column align-items-start 
 		  	{{#active}} active {{/active}}" >
 		  	
 		    <small>Key: {{key}}</small>

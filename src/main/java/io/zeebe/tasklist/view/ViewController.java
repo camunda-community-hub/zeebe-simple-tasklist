@@ -161,6 +161,7 @@ public class ViewController {
       Map<String, Object> model, Pageable pageable, final long count) {
 
     final int currentPage = pageable.getPageNumber();
+    model.put("currentPage", currentPage);
     model.put("page", currentPage + 1);
     if (currentPage > 0) {
       model.put("prevPage", currentPage - 1);
