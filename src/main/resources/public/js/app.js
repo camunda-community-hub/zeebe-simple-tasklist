@@ -30,30 +30,11 @@ function reload() {
 }
 
 // --------------------------------------------------------------------
-
-function completeTask(taskKey) {
-
-	var formInputs = $(".task-form");
 	
-	var data = [];
-	for (i = 0; i < formInputs.length; i++) {
-		var formInput = formInputs[i];
-		var key = formInput.id.substr("form_".length);
-		var value = formInput.value;
-		
-		if (formInput.type == "number") {
-			value = Number(value)
-		} else if (formInput.type == "checkbox") {
-			value = Boolean(formInput.checked)
-		}
-		
-		data[i] = { key: key, value: value };
-	}
+function completeTask(data) {
 
-	completeTaskWithData(taskKey, data);
-}	
-	
-function completeTaskWithData(taskKey, data) {
+	var taskKey = document.getElementById("task-key").value;
+
 	$.ajax({
        type : 'PUT',
        url: '/api/tasks/' + taskKey + '/complete',

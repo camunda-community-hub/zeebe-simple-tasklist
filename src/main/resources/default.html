@@ -7,7 +7,7 @@
   </li>
 </ul>
 
-<div class="tab-content" id="myTabContent">
+<div class="tab-content border-bottom mb-2" id="myTabContent">
   <div class="tab-pane fade show active" id="formData" role="tabpanel" aria-labelledby="formData-tab">
   	<form>
 			{{#formFields}}
@@ -39,3 +39,30 @@
   </div>
   
 </div>
+
+<button type="button" class="btn btn-primary" onclick="complete()">
+  Complete
+</button>
+
+<script>
+	function complete() {
+		var formInputs = $(".task-form");
+		
+		var data = [];
+		for (i = 0; i < formInputs.length; i++) {
+			var formInput = formInputs[i];
+			var key = formInput.id.substr("form_".length);
+			var value = formInput.value;
+			
+			if (formInput.type == "number") {
+				value = Number(value)
+			} else if (formInput.type == "checkbox") {
+				value = Boolean(formInput.checked)
+			}
+			
+			data[i] = { key: key, value: value };
+		}
+	
+		completeTask(data);
+	}	
+</script>

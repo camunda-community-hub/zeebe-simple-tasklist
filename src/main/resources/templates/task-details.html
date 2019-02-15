@@ -11,13 +11,11 @@
 	  <h5>{{description}}</h5>
   </div>
 
-	<div class="border-bottom mb-2">
+	<div>
+		<input type="hidden" id="task-key" value="{{key}}">
+	
 		{{{taskForm}}}		
 	</div>
-
-	<button type="button" class="btn btn-primary" onclick="completeTask({{key}})">
-	  Complete
-	</button>
 	
 {{/task}}
 

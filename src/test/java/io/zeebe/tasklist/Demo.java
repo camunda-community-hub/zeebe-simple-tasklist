@@ -57,7 +57,7 @@ public class Demo {
                         .zeebeTaskHeader("description", "Task with mulitple fields")
                         .zeebeTaskHeader(
                             "formData",
-                            "[{\"key\":\"i1\", \"label\":\"any string\", \"type\":\"string\"}, {\"key\":\"i2\", \"label\":\"any number\", \"type\":\"boolean\"}]"))
+                            "[{\"key\":\"i1\", \"label\":\"any string\", \"type\":\"string\"}, {\"key\":\"i2\", \"label\":\"any boolean\", \"type\":\"boolean\"}]"))
             .done();
 
     client
@@ -67,7 +67,7 @@ public class Demo {
         .send()
         .join();
 
-    IntStream.range(0, 30)
+    IntStream.range(0, 10)
         .forEach(
             i -> {
               client
