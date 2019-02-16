@@ -30,7 +30,40 @@ function reload() {
 }
 
 // --------------------------------------------------------------------
+					
+						var stompClient = null;
+						var notifications = 0;
+             
+            function connect() {
+                var socket = new SockJS('/notifications');
+                stompClient = Stomp.over(socket);  
+                stompClient.connect({}, function(frame) {
+                    stompClient.subscribe('/notifications/tasks', function(message) {
+                      handleMessage(JSON.parse(message.body));
+                    });
+                });
+            }
+             
+            function disconnect() {
+                if(stompClient != null) {
+                    stompClient.disconnect();
+                }
+            }
+             
+            function sendMessage(msg) {
+                stompClient.send("/notifications", {}, 
+                  JSON.stringify(msg));
+            }
+             
+            function handleMessage(msg) {
+								var message = msg.message;
+								notifications = notifications + 1;
+								
+								showInfo(notifications + ' ' + message);
+						}
 	
+// --------------------------------------------------------------------
+
 function completeTask(data) {
 
 	var taskKey = document.getElementById("task-key").value;
@@ -41,7 +74,7 @@ function completeTask(data) {
        data:  JSON.stringify(data),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
-       	showSuccess("Task completed.");	
+       	showSuccess("Task '" + taskKey + "' completed.");	
        },
        error: function (xhr, ajaxOptions, thrownError) {
       	 showErrorResonse(xhr, ajaxOptions, thrownError);
