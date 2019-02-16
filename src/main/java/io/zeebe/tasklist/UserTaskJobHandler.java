@@ -7,6 +7,7 @@ import io.zeebe.client.api.subscription.JobHandler;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
 import io.zeebe.tasklist.view.FormField;
+import io.zeebe.tasklist.view.NotificationService;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,8 @@ public class UserTaskJobHandler implements JobHandler {
   private final TaskDataSerializer serializer = new TaskDataSerializer();
 
   @Autowired private TaskRepository repository;
+
+  @Autowired private NotificationService notificationService;
 
   @Override
   public void handle(JobClient client, ActivatedJob job) {
@@ -54,6 +57,8 @@ public class UserTaskJobHandler implements JobHandler {
     entity.setTaskForm(taskForm);
 
     repository.save(entity);
+
+    notificationService.sendNewTask();
   }
 
   private void validateFormFields(String form) {

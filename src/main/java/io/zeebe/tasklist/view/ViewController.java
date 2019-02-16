@@ -10,9 +10,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -203,5 +207,14 @@ public class ViewController {
     if (count > (1 + currentPage) * pageable.getPageSize()) {
       model.put("nextPage", currentPage + 1);
     }
+  }
+
+  @MessageMapping("/chat")
+  @SendTo("/topic/messages")
+  public OutputMessage send(Message message) throws Exception {
+    System.out.println("--> received: " + message);
+
+    String time = new SimpleDateFormat("HH:mm").format(new Date());
+    return new OutputMessage(message.getFrom(), message.getText(), time);
   }
 }

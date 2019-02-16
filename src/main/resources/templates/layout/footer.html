@@ -5,6 +5,47 @@
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+        <script type="text/javascript">
+            var stompClient = null;
+						var notifications = 0;
+             
+            function connect() {
+                var socket = new SockJS('/notifications');
+                stompClient = Stomp.over(socket);  
+                stompClient.connect({}, function(frame) {
+                    console.log('Connected: ' + frame);
+                    stompClient.subscribe('/noticiations/tasks', function(messageOutput) {
+                      showMessageOutput(JSON.parse(messageOutput.body));
+                    });
+                });
+            }
+             
+            function disconnect() {
+                if(stompClient != null) {
+                    stompClient.disconnect();
+                }
+                setConnected(false);
+                console.log("Disconnected");
+            }
+             
+            function sendMessage() {
+                var from = document.getElementById('from').value;
+                var text = document.getElementById('text').value;
+                stompClient.send("/app/chat", {}, 
+                  JSON.stringify({'from':from, 'text':text}));
+            }
+             
+            function showMessageOutput(messageOutput) {
+
+								notifications = notifications + 1;
+								
+								showInfo(notifications + ' ' + messageOutput.message);
+						}
+        </script>
+
 <script src="/js/app.js"></script>
 
 </body>
