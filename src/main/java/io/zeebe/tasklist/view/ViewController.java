@@ -36,7 +36,7 @@ public class ViewController {
 
   @Autowired private TaskRepository repository;
 
-  private Template taskTemplate;
+  private Template defaultTaskTemplate;
 
   @PostConstruct
   public void loadTemplate() {
@@ -50,7 +50,7 @@ public class ViewController {
         reader = Files.newBufferedReader(Paths.get(defaultTaskForm));
       }
 
-      taskTemplate = Mustache.compiler().compile(reader);
+      defaultTaskTemplate = Mustache.compiler().compile(reader);
     } catch (Exception e) {
       throw new RuntimeException("Failed to load default task templete", e);
     }
@@ -100,31 +100,8 @@ public class ViewController {
         .findById(key)
         .ifPresent(
             task -> {
-              try {
-
-                final Map<String, Object> templateData = new HashMap<>();
-
-                final Map<String, Object> taskPayload = serializer.readVariables(task.getPayload());
-                templateData.put("variables", taskPayload.entrySet());
-
-                Optional.ofNullable(task.getFormData())
-                    .ifPresent(
-                        formData -> {
-                          final List<FormField> formFields = serializer.readFormFields(formData);
-                          formFields.forEach(this::setInputTypeOfFormField);
-
-                          templateData.put("formFields", formFields);
-                        });
-
-                final String taskForm = taskTemplate.execute(templateData);
-                model.put("taskForm", taskForm);
-
-              } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-
-                model.put("taskForm", "???");
-              }
+              final String taskForm = renderTaskForm(task);
+              model.put("taskForm", taskForm);
 
               model.put("task", toDto(task));
             });
@@ -135,6 +112,43 @@ public class ViewController {
     addPaginationToModel(model, pageable, count);
 
     return "task-list-view";
+  }
+
+  private String renderTaskForm(TaskEntity task) {
+    try {
+      final Map<String, Object> taskPayload = serializer.readVariables(task.getPayload());
+
+      final Template taskTemplate =
+          Optional.ofNullable(task.getTaskForm())
+              .map(Mustache.compiler()::compile)
+              .orElse(defaultTaskTemplate);
+
+      final Map<String, Object> templateData = new HashMap<>();
+
+      final String taskForm = task.getTaskForm();
+      if (taskForm != null) {
+        templateData.putAll(taskPayload);
+
+      } else {
+        templateData.put("variables", taskPayload.entrySet());
+
+        Optional.ofNullable(task.getFormFields())
+            .ifPresent(
+                form -> {
+                  final List<FormField> formFields = serializer.readFormFields(form);
+                  formFields.forEach(this::setInputTypeOfFormField);
+
+                  templateData.put("formFields", formFields);
+                });
+      }
+
+      return taskTemplate.execute(templateData);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+
+      return "⚠ Failure while rendering task form.";
+    }
   }
 
   private void setInputTypeOfFormField(FormField field) {

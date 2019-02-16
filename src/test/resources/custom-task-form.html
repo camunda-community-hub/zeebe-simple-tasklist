@@ -1,0 +1,49 @@
+<div class="border-bottom mb-2">
+  	<form>
+  			 <div class="form-group">
+				    <label>Order Id</label>
+				    <input type="text" id="orderId" class="form-control" value="{{orderId}}" readonly>
+			   </div>
+			   
+			   <div class="form-group">
+				    <label>Price</label>
+				    <input type="text" id="price" class="form-control" value="{{price}}" readonly>
+			   </div>
+			   
+			   <div class="form-group">
+				    <label>Comment</label>
+				    <input type="text" id="form_comment" class="form-control">
+			   </div>
+		</form>
+</div>
+
+<div>
+    <button type="button" class="btn btn-primary" onclick="accept()">Accept</button>
+    <button type="button" class="btn btn-light" onclick="reject()">Reject</button>
+</div>			 
+
+<script>
+	function accept() {
+		var data = [{
+				key: "accept",
+				value: true
+			}, {
+				key: "comment",
+				value: document.getElementById("form_comment").value
+			}];
+		
+		completeTask(data);
+	}	
+	
+	function reject() {
+		var data = [{
+				key: "accept",
+				value: false
+			}, {
+				key: "comment",
+				value: document.getElementById("form_comment").value
+			}];
+		
+		completeTask(data);
+	}	
+</script>

@@ -18,6 +18,7 @@ package io.zeebe.tasklist.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity(name = "JOB")
 public class TaskEntity {
@@ -38,8 +39,12 @@ public class TaskEntity {
   @Column(name = "DESCRIPTION_")
   private String description;
 
-  @Column(name = "FORM_DATA_")
-  private String formData;
+  @Column(name = "FORM_FIELDS_")
+  private String formFields;
+
+  @Column(name = "TASK_FORM_")
+  @Lob
+  private String taskForm;
 
   public long getKey() {
     return key;
@@ -81,11 +86,19 @@ public class TaskEntity {
     this.description = description;
   }
 
-  public String getFormData() {
-    return formData;
+  public String getFormFields() {
+    return formFields;
   }
 
-  public void setFormData(String formData) {
-    this.formData = formData;
+  public void setFormFields(String formFields) {
+    this.formFields = formFields;
+  }
+
+  public String getTaskForm() {
+    return taskForm;
+  }
+
+  public void setTaskForm(String taskForm) {
+    this.taskForm = taskForm;
   }
 }

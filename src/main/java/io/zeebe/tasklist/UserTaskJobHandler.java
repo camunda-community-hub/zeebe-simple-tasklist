@@ -43,18 +43,21 @@ public class UserTaskJobHandler implements JobHandler {
     final String description = (String) customHeaders.getOrDefault("description", "");
     entity.setDescription(description);
 
-    Optional.ofNullable((String) customHeaders.get("formData"))
+    Optional.ofNullable((String) customHeaders.get("formFields"))
         .ifPresent(
-            formData -> {
-              validateFormData(formData);
-              entity.setFormData(formData);
+            formFields -> {
+              validateFormFields(formFields);
+              entity.setFormFields(formFields);
             });
+
+    final String taskForm = (String) customHeaders.get("taskForm");
+    entity.setTaskForm(taskForm);
 
     repository.save(entity);
   }
 
-  private void validateFormData(String formData) {
-    final List<FormField> formFields = serializer.readFormFields(formData);
+  private void validateFormFields(String form) {
+    final List<FormField> formFields = serializer.readFormFields(form);
 
     formFields.forEach(
         field -> {
