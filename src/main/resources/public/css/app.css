@@ -2,3 +2,14 @@
 	border-bottom: 2px solid #0d8dba!important;
 }
 
+body, html {
+	font-size: 14px;
+}
+
+.task-description {
+  display: block;
+  max-width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

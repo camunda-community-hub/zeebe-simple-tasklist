@@ -1,14 +1,14 @@
 {{#task}}
 
 	<div class="border-bottom mb-2">
-		<h6>Key: {{key}}</h6>
+		<span>Key: {{key}}</span>
 		
 		<div class="d-flex w-100 justify-content-between">
-	    <h1 class="mb-1">{{name}}</h1>
-	    <h6>{{created}} ago</h6>
+	    <h2 class="mb-1">{{name}}</h2>
+	    <span>{{created}} ago</span>
 	  </div>
 	  
-	  <h5>{{description}}</h5>
+	  <h6>{{description}}</h6>
   </div>
 
 	<div>
@@ -22,8 +22,8 @@
 {{^task}}
 	<div class="d-flex justify-content-center">
 		<div>
-			<span class="h3">No task selected.</span>
-			<p>Select one from the list.</p>
+			<h3>No task selected.</h3>
+			<span>Select one from the list.</span>
 		</div>
 	</div>
 {{/task}}
