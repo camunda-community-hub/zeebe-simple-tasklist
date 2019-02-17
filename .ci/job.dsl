@@ -63,51 +63,6 @@ sha1sum ${JAR} > ${CHECKSUM}
 ../../github-release upload --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "${CHECKSUM}" --file "${CHECKSUM}"
 '''
 
-def dockerRelease = '''\
-#!/bin/bash -xeu
-
-cd app/
-
-# clear docker host env set by jenkins job
-unset DOCKER_HOST
-
-IMAGE="camunda/zeebe-simple-tasklist"
-
-echo "Building Zeebe Simple Tasklist Docker image ${RELEASE_VERSION}."
-docker build --no-cache --build-arg JAR=target/zeebe-simple-tasklist-${RELEASE_VERSION}.jar -t ${IMAGE}:${RELEASE_VERSION} .
-
-echo "Authenticating with DockerHub and pushing image."
-docker login --username ${DOCKER_HUB_USERNAME} --password ${DOCKER_HUB_PASSWORD} --email ci@camunda.com
-
-echo "Pushing ${IMAGE}:${RELEASE_VERSION}"
-docker push ${IMAGE}:${RELEASE_VERSION}
-
-docker tag -f ${IMAGE}:${RELEASE_VERSION} ${IMAGE}:latest
-
-echo "Pushing ${IMAGE}:latest"
-docker push ${IMAGE}:latest
-'''
-
-def dockerSnapshot = '''\
-#!/bin/bash
-cd app/
-# clear docker host env set by jenkins job
-unset DOCKER_HOST
-
-if [ -f target/zeebe-simple-tasklist-*-SNAPSHOT.jar ]; then
-    IMAGE="camunda/zeebe-simple-tasklist:SNAPSHOT"
-
-    echo "Building Zeebe Simple Tasklist Docker image ${IMAGE}."
-    docker build --no-cache -t ${IMAGE} .
-
-    echo "Authenticating with DockerHub and pushing image."
-    docker login --username ${DOCKER_HUB_USERNAME} --password ${DOCKER_HUB_PASSWORD} --email ci@camunda.com
-
-    echo "Pushing ${IMAGE}"
-    docker push ${IMAGE}
-fi
-'''
-
 // properties used by the release build
 def releaseProperties = [
     resume: 'false',
