@@ -1,75 +1,77 @@
-Zeebe Simple Monitor
+Zeebe Simple Tasklist
 =========================
 
-This is a monitoring application for [Zeebe](https://zeebe.io). It has two parts: an [exporter](https://github.com/zeebe-io/zeebe-simple-monitor/exporter) and a [web application](https://github.com/zeebe-io/zeebe-simple-monitor/app). The exporter runs on the Zeebe broker and export data to a database. The webapp reads the data from the database and present it in a HTML5 web application.
+A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of type `user` as a task/todo-list. A user can complete the tasks with requested data. 
 
-**Important notes:**
-* The simple monitor is a community project meant for playing around with Zeebe. **Consider it unstable! There is no guranteed maintenance! It is not officially supported by the Zeebe Team!** But of course everybody is invited to contribute!
-* The simple monitor is tested on **Chrome only**. Other browsers are not supported.
+> This application can be used in development or as a blueprint for your own task-list. It is not designed to be used in production. 
 
-**Features:**
-* inspect deployed workflows
-* inspect workflow instances, including payload and incidents
-* management operations (e.g. new deployment, cancel workflow instance, update payload)
+## Usage
+
+* the worker is registered for jobs of type `user`
+* optional custom headers:
+  * `name` (String) - the name of the task _(default: the element id)_
+  * `description` (String) - a description what is the task about
+  * `taskForm` (HTML) - the form to show and provide task data ([example task form]())
+  * `formFields` (JSON) - the form fields for the default task form, if no task form is set (example: `[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}, {\"key\":\"price\", \"label\":\"Price\", \"type\":\"number\"}]`)
+
+Example service task:
+
+```xml
+<bpmn:serviceTask id="userTask" name="User Task">
+  <bpmn:extensionElements>
+    <zeebe:taskDefinition type="user" />
+    <zeebe:taskHeaders>
+      <zeebe:header key="name" value="My User Task" />
+      <zeebe:header key="description" value="My first user task with a form field." />
+      <zeebe:header key="formFields" value="[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}]" />
+    </zeebe:taskHeaders>
+  </bpmn:extensionElements>
+</bpmn:serviceTask>
+```
 
 ## How to run
 
-### With Docker
+Download the JAR file from the [download page]().
 
-The following command will build the project, pull images and start containers with default settings.
-
-In your terminal (in the root project folder):
-
-```bash
-docker/run
-```
-Note: You can build the project with maven in a containerized environ by commenting the line 14 and uncommenting the line 15 in the `docker/run` file.
-If you don't have the right to launch `docker/run` try : 
-
-```bash
-chmod +x docker/run
-```
-and try again.
-
-### Manually
-
-#### How to build
-
-Build with Maven
+Or build it with Maven
 
 `mvn clean install`
 
-Before you start the broker, copy the exporter JAR from the target folder into the lib folder of the broker.
+Execute the JAR file via
+
+`java -jar target/zeebe-simple-tasklist-{VERSION}.jar`
+
+## How to configure
+
+The configuration can be changes via `application.properties`, `application.yaml` or command line arguments.
 
 ```
-cp exporter/target/zeebe-simple-monitor-exporter-%{VERSION}.jar ~/zeebe-broker-%{VERSION}/lib/
+# Connection to Zeebe broker
+io.zeebe.tasklist.connectionString=localhost:26500
+
+# Path to the default task form  
+io.zeebe.tasklist.defaultTaskForm=/my-default-task-form.html
+
+# Database settings
+spring.datasource.url=jdbc:h2:~/zeebe-tasklist
+spring.datasource.user=sa
+spring.datasource.password=
+
+spring.jpa.hibernate.ddl-auto=update
+
+# Server settings
+server.port = 8081
 ```
-
-Register the exporter in the Zeebe configuration file `~/zeebe-broker-%{VERSION}/config/zeebe.cfg.toml`.
-
-```
-[[exporters]]
-id = "simple-monitor"
-className = "io.zeebe.monitor.SimpleMonitorExporter"
-```
-
-Now start the broker and the webapp
-
-`java -jar app/target/zeebe-simple-monitor-app-{VERSION}.jar`
-
-Open a web browser and go to http://localhost:8080
-
-> The default configuration uses a file-based H2 database and works if the broker and the webapp runs on the same machine. See the [exporter](https://github.com/zeebe-io/zeebe-simple-monitor/tree/master/exporter#configure-the-exporter) and the [web application](https://github.com/zeebe-io/zeebe-simple-monitor/tree/master/app#configuration) for more configuration options.
 
 ## Screenshots
 
-**Workflow View**
+**Generic Task Form**
 
-![screenshot](app/docs/workflow-details.png)
+![screenshot](docs/generic-task-form.png)
 
-**Workflow Instance View**
+**Custom Taks Form**
 
-![screenshot](app/docs/instance-details.png)
+![screenshot](docs/custom-task-form.png)
 
 ## Code of Conduct
 

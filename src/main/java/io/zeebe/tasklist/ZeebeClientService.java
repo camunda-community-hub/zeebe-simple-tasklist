@@ -32,7 +32,6 @@ public class ZeebeClientService {
     client = ZeebeClient.newClientBuilder().brokerContactPoint(connectionString).build();
 
     getClient()
-        .jobClient()
         .newWorker()
         .jobType("user")
         .handler(jobHandler)

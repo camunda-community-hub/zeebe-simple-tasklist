@@ -74,7 +74,7 @@ function completeTask(data) {
        data:  JSON.stringify(data),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
-       	showSuccess("Task '" + taskKey + "' completed.");	
+       	showSuccess("Task completed. (Key: " + taskKey + ")");	
        },
        error: function (xhr, ajaxOptions, thrownError) {
       	 showErrorResonse(xhr, ajaxOptions, thrownError);

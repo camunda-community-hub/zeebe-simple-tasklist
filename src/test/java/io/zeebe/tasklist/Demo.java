@@ -38,22 +38,16 @@ public class Demo {
                         .zeebeTaskHeader("taskForm", getCustomTaskForm()))
             .done();
 
-    client
-        .workflowClient()
-        .newDeployCommand()
-        .addWorkflowModel(workflow, "demoProcess.bpmn")
-        .send()
-        .join();
+    client.newDeployCommand().addWorkflowModel(workflow, "demoProcess.bpmn").send().join();
 
     IntStream.range(0, 3)
         .forEach(
             i -> {
               client
-                  .workflowClient()
                   .newCreateInstanceCommand()
                   .bpmnProcessId("demo-process")
                   .latestVersion()
-                  .payload(Collections.singletonMap("a", i))
+                  .payload(Collections.singletonMap("task-nr", i))
                   .send()
                   .join();
             });

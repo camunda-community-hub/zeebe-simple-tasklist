@@ -48,13 +48,7 @@ public class TaskResource {
     final Map<String, Object> payload =
         variables.stream().collect(Collectors.toMap(TaskVariable::getKey, TaskVariable::getValue));
 
-    zeebeClientService
-        .getClient()
-        .jobClient()
-        .newCompleteCommand(key)
-        .payload(payload)
-        .send()
-        .join();
+    zeebeClientService.getClient().newCompleteCommand(key).payload(payload).send().join();
 
     repository.delete(task);
   }
