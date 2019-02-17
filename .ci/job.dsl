@@ -179,8 +179,6 @@ mavenJob(jobName)
 
                 shell githubRelease
 
-                shell dockerRelease
-
             }
 
         }
