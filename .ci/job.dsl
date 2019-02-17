@@ -239,10 +239,10 @@ mavenJob(jobName)
     publishers
     {
 
-        archiveJunit('**/target/surefire-reports/*.xml')
-        {
-            retainLongStdout()
-        }
+        //archiveJunit('**/target/surefire-reports/*.xml')
+        //{
+        //    retainLongStdout()
+        //}
 
         extendedEmail
         {

@@ -84,11 +84,11 @@ server.port = 8081
 
 ## Screenshots
 
-**Generic Task Form**
+**Default Task Form**
 
 ![screenshot](docs/generic-task-form.png)
 
-**Custom Taks Form**
+**Custom Task Form**
 
 ![screenshot](docs/custom-task-form.png)
 
