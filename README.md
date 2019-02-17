@@ -11,10 +11,24 @@ A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It
 * optional custom headers:
   * `name` (String) - the name of the task _(default: the element id)_
   * `description` (String) - a description what is the task about
-  * `taskForm` (HTML) - the form to show and provide task data ([example task form]())
-  * `formFields` (JSON) - the form fields for the default task form, if no task form is set (example: `[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}, {\"key\":\"price\", \"label\":\"Price\", \"type\":\"number\"}]`)
+  * `taskForm` (HTML) - the form to show and provide task data ([example task form](https://github.com/zeebe-io/zeebe-simple-tasklist/blob/master/src/test/resources/custom-task-form.html))
+  * `formFields` (JSON) - the form fields for the default task form, if no task form is set
 
-Example service task:
+### Example Form Fields
+
+```
+[{
+		\"key\":\"orderId\", 
+		\"label\":\"Order Id\", 
+		\"type\":\"string\"
+	}, {
+		\"key\":\"price\", 
+		\"label\":\"Price\", 
+		\"type\":\"number\"
+	}]`)
+```
+
+### Example Service Task
 
 ```xml
 <bpmn:serviceTask id="userTask" name="User Task">
@@ -31,7 +45,7 @@ Example service task:
 
 ## How to run
 
-Download the JAR file from the [download page]().
+Download the JAR file from the [download page](https://github.com/zeebe-io/zeebe-simple-tasklist/releases).
 
 Or build it with Maven
 
