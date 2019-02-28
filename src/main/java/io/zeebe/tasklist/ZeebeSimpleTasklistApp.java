@@ -37,14 +37,29 @@ public class ZeebeSimpleTasklistApp {
   @Value("${io.zeebe.tasklist.connectionString}")
   private String connectionString;
 
+  @Value("${io.zeebe.tasklist.adminUsername}")
+  private String adminUsername;
+
+  @Value("${io.zeebe.tasklist.adminPassword}")
+  private String adminPassword;
+
   @Autowired private ZeebeClientService zeebeClientService;
+
+  @Autowired private UserService userService;
 
   public static void main(String... args) {
     SpringApplication.run(ZeebeSimpleTasklistApp.class, args);
   }
 
   @PostConstruct
-  public void connect() {
+  public void init() {
+    LOG.info("Connecting to Zeebe broker '{}'", connectionString);
     zeebeClientService.connect(connectionString);
+
+    if (!adminUsername.isEmpty() && !userService.hasUserWithName(adminUsername)) {
+      LOG.info(
+          "Creating admin user with name '{}' and password '{}'", adminUsername, adminPassword);
+      userService.newAdminUser(adminUsername, adminPassword);
+    }
   }
 }

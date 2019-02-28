@@ -39,6 +39,7 @@ public class UserTaskJobHandler implements JobHandler {
 
     final JobHeaders headers = job.getHeaders();
     final Map<String, Object> customHeaders = job.getCustomHeaders();
+    final Map<String, Object> jobPayload = job.getPayloadAsMap();
 
     final String name = (String) customHeaders.getOrDefault("name", headers.getElementId());
     entity.setName(name);
@@ -55,6 +56,14 @@ public class UserTaskJobHandler implements JobHandler {
 
     final String taskForm = (String) customHeaders.get("taskForm");
     entity.setTaskForm(taskForm);
+
+    final String assignee =
+        (String) customHeaders.getOrDefault("assignee", jobPayload.get("assignee"));
+    entity.setAssignee(assignee);
+
+    final String candidateGroup =
+        (String) customHeaders.getOrDefault("candidateGroup", jobPayload.get("candidateGroup"));
+    entity.setCandidateGroup(candidateGroup);
 
     repository.save(entity);
 

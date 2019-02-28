@@ -1,0 +1,56 @@
+{{>layout/header}}
+
+{{>new-user-modal}}
+
+<div class="row">
+	
+	<div class="col-md-12 mb-2">
+		
+		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#userModal">
+		  New User
+		</button>
+						
+	</div>
+	
+	<div class="col-md-12 mb-2 border-right">
+		<div class="mb-2">
+			<span>{{count}} users</span>
+		</div>
+		
+		<div class="mb-2">
+			<table class="table table-striped">
+				<thead>
+				  <th>Username</th>
+				  <th>Member of Groups</th>
+				  <th> </th>
+			</thead>
+		
+			{{#users}}
+				{{>user-group-modal}}
+				{{>delete-user-modal}}
+				
+				<tr>
+					<td>{{username}}</td>
+					<td>{{groupNames}}</td>
+					<td class="float-right">		
+						<button	type="button" class="btn btn-primary" data-toggle="modal" data-target="#userGroupModal-{{username}}">
+						  Update
+						</button>
+						
+						<button	type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteUserModal-{{username}}">
+						  Delete
+						</button>
+					</td>
+				</tr>
+			{{/users}}
+			
+			</table>
+		
+		</div>
+		
+		{{>components/table-pagination}}
+	</div>
+	
+</div>
+
+{{>layout/footer}}

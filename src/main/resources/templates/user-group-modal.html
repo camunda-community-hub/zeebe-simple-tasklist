@@ -1,0 +1,47 @@
+<div class="modal fade" id="userGroupModal-{{username}}" tabindex="-1" role="dialog" aria-labelledby="userGroupModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Group Memberships</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+             
+      	<div class="form-group">
+          <label class="col-form-label">Username</label>
+          <input class="form-control" type="text" value="{{username}}" readonly />
+        </div>
+              
+      	<div class="form-group border-bottom">
+          <label class="col-form-label">Member of Groups</label>
+        </div>
+              
+      	{{#availableGroups}}
+				  <div class="form-group form-check">
+				    <input type="checkbox" class="form-check-input group-member-{{username}}" id="group-{{username}}-{{.}}" value="{{.}}">
+				    <label class="form-check-label" for="group-{{.}}">{{.}}</label>
+				  </div>				  
+     		{{/availableGroups}}
+		    
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      
+      	<button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="updateGroupMemberships('{{username}}')">Update</button>
+    	</div>
+      
+    </div>
+  </div>
+</div>
+
+<script>
+	{{#groups}}
+		var element = document.getElementById("group-{{username}}-{{name}}");
+		element.checked = true;
+	{{/groups}}	
+</script>

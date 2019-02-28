@@ -14,13 +14,6 @@
 
     <link rel=icon href="/img/favicon.ico">
     
-    <script>
-    	var count = {{count}};
-    	if (count > 0) {
-    		document.title = '(' + count + ') ' + document.title;
-    	}    
-    </script>
-    
 </head>
 
 <body onload="connect()" onunload="disconnect()">
@@ -34,11 +27,43 @@
 		<div class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="/">Tasks</a>
+					<a class="nav-link" href="/views/my-tasks/">My Tasks</a>
 				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/views/claimable-tasks/">Claimable Tasks</a>
+				</li>
+				
+				{{#user.isAdmin}}
+					<li class="nav-item">
+						<a class="nav-link" href="/views/users/">Users</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/views/groups/">Groups</a>
+					</li>
+				{{/user.isAdmin}}					
+					
 			</ul>
-		</div>
 
+		{{#user}}
+		
+			<div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Hello, {{name}}
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          
+          <form class="dropdown-item" action="/logout" method="post">
+				    <input type="hidden" id="_csrf" name="_csrf" value="{{_csrf.token}}" />
+				    <button type="submit" class="btn btn-primary">Logout</button>
+				  </form>
+				  
+        </div>
+      </div>			
+		
+		{{/user}}
+		
+		</div>
 	</nav>
 			
 	<div class="container-fluid">

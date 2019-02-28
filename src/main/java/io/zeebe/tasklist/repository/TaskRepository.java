@@ -16,6 +16,33 @@
 package io.zeebe.tasklist.repository;
 
 import io.zeebe.tasklist.entity.TaskEntity;
+import java.util.Collection;
+import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
-public interface TaskRepository extends PagingAndSortingRepository<TaskEntity, Long> {}
+public interface TaskRepository extends PagingAndSortingRepository<TaskEntity, Long> {
+
+  long countByAssignee(String assignee);
+
+  @Query(
+      nativeQuery = true,
+      value =
+          "SELECT count(*) "
+              + "FROM TASK "
+              + "WHERE ASSIGNEE_ is null and (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
+  long countByClaimable(@Param("groups") Collection<String> groups);
+
+  List<TaskEntity> findAllByAssignee(String assignee, Pageable pageable);
+
+  @Query(
+      nativeQuery = true,
+      value =
+          "SELECT * "
+              + "FROM TASK "
+              + "WHERE ASSIGNEE_ is null and (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
+  List<TaskEntity> findAllByClaimable(
+      @Param("groups") Collection<String> groups, Pageable pageable);
+}

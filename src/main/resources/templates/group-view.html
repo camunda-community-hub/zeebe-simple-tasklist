@@ -1,0 +1,51 @@
+{{>layout/header}}
+
+{{>new-group-modal}}
+
+<div class="row">
+	
+	<div class="col-md-12 mb-2">
+		
+		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#groupModal">
+		  New Group
+		</button>
+						
+	</div>
+	
+	<div class="col-md-12 mb-2 border-right">
+		<div class="mb-2">
+			<span>{{count}} groups</span>
+		</div>
+		
+		<div class="mb-2">
+			<table class="table table-striped">
+				<thead>
+				  <th>Name</th>
+				  <th>Members of Group</th>
+				  <th> </th>
+			</thead>
+		
+			{{#groups}}
+				{{>delete-group-modal}}
+				
+				<tr>
+					<td>{{name}}</td>
+					<td>{{userNames}}</td>
+					<td class="float-right">	
+						<button	type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteGroupModal-{{name}}">
+						  Delete
+						</button>
+					</td>
+				</tr>
+			{{/groups}}
+			
+			</table>
+		
+		</div>
+		
+		{{>components/table-pagination}}
+	</div>
+	
+</div>
+
+{{>layout/footer}}

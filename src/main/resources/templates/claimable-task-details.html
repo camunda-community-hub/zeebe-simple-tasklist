@@ -1,0 +1,38 @@
+{{#task}}
+
+
+	<div class="mb-2 d-flex w-100 justify-content-end">
+		<button type="button" class="btn btn-primary" onclick="claimTask({{key}})">
+		  Claim Task
+		</button>
+	</div>	
+	
+	<div class="border-bottom mb-2">
+	
+		<span>Key: {{key}}</span>
+		
+		<div class="d-flex w-100 justify-content-between">
+	    <h2 class="mb-1">{{name}}</h2>
+	 	  <span>{{created}} ago</span>
+	  </div>
+	  
+	  <h6>{{description}}</h6>
+
+  </div>
+
+	<div>	
+		<fieldset disabled>	
+			{{{taskForm}}}		
+		</fieldset>	
+	</div>	
+	
+{{/task}}
+
+{{^task}}
+	<div class="d-flex justify-content-center">
+		<div>
+			<h3>No task selected.</h3>
+			<span>Select one from the list.</span>
+		</div>
+	</div>
+{{/task}}

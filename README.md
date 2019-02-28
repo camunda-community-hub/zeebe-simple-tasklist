@@ -13,7 +13,12 @@ A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It
   * `description` (String) - a description what is the task about
   * `taskForm` (HTML) - the form to show and provide the task data ([example task form](https://github.com/zeebe-io/zeebe-simple-tasklist/blob/master/src/test/resources/custom-task-form.html))
   * `formFields` (JSON) - the form fields for the default task form, if no task form is set
-
+  * `assignee` (String) - the name of the user which should be assigned to the task
+  * `candidateGroup` (String) - the name of the group which can claim the task
+* optional variables/payload:
+  * `assignee` (String) - the name of the user which should be assigned to the task, if not set as header
+  * `candidateGroup` (String) - the name of the group which can claim the task, if not set as header
+  
 **Default Task Form**
 
 If no `taskForm` is defined then the default task form is used. It takes the `formFields` and renders a form with all defined fields. The fields are defined as JSON list, for example:
@@ -43,6 +48,7 @@ The `type` must be one of: string, number, boolean.
       <zeebe:header key="name" value="My User Task" />
       <zeebe:header key="description" value="My first user task with a form field." />
       <zeebe:header key="formFields" value="[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}]" />
+      <zeebe:header key="assignee" value="demo" />
     </zeebe:taskHeaders>
   </bpmn:extensionElements>
 </bpmn:serviceTask>
@@ -50,15 +56,19 @@ The `type` must be one of: string, number, boolean.
 
 ## How to run
 
-Download the JAR file from the [download page](https://github.com/zeebe-io/zeebe-simple-tasklist/releases).
+1. Download the JAR file from the [download page](https://github.com/zeebe-io/zeebe-simple-tasklist/releases).
 
-Or build it with Maven
+	Or build it with Maven
 
-`mvn clean install`
+	`mvn clean install`
 
-Execute the JAR file via
+2. Execute the JAR file via
 
-`java -jar target/zeebe-simple-tasklist-{VERSION}.jar`
+	`java -jar target/zeebe-simple-tasklist-{VERSION}.jar`
+
+3. Go to http://localhost:8081
+
+4. Login with `demo/demo`
 
 ## How to configure
 
@@ -70,6 +80,10 @@ io.zeebe.tasklist.connectionString=localhost:26500
 
 # Path to the default task form  
 io.zeebe.tasklist.defaultTaskForm=/my-default-task-form.html
+
+# Admin user
+io.zeebe.tasklist.adminUsername=demo
+io.zeebe.tasklist.adminPassword=demo
 
 # Database settings
 spring.datasource.url=jdbc:h2:~/zeebe-tasklist

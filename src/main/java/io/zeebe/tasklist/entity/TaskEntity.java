@@ -20,7 +20,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
-@Entity(name = "JOB")
+@Entity(name = "TASK")
 public class TaskEntity {
 
   @Id
@@ -45,6 +45,12 @@ public class TaskEntity {
   @Column(name = "TASK_FORM_")
   @Lob
   private String taskForm;
+
+  @Column(name = "ASSIGNEE_")
+  private String assignee;
+
+  @Column(name = "CANDIDATE_GROUP_")
+  private String candidateGroup;
 
   public long getKey() {
     return key;
@@ -100,5 +106,21 @@ public class TaskEntity {
 
   public void setTaskForm(String taskForm) {
     this.taskForm = taskForm;
+  }
+
+  public String getAssignee() {
+    return assignee;
+  }
+
+  public void setAssignee(String assignee) {
+    this.assignee = assignee;
+  }
+
+  public String getCandidateGroup() {
+    return candidateGroup;
+  }
+
+  public void setCandidateGroup(String candidateGroup) {
+    this.candidateGroup = candidateGroup;
   }
 }

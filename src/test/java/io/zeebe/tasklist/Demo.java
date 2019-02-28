@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 public class Demo {
@@ -43,11 +44,16 @@ public class Demo {
     IntStream.range(0, 3)
         .forEach(
             i -> {
+              final Map<String, Object> variables = new HashMap<>();
+              variables.put("task-nr", i);
+              // variables.put("assignee", "user1");
+              // variables.put("candidateGroup", "group1");
+
               client
                   .newCreateInstanceCommand()
                   .bpmnProcessId("demo-process")
                   .latestVersion()
-                  .payload(Collections.singletonMap("task-nr", i))
+                  .variables(variables)
                   .send()
                   .join();
             });

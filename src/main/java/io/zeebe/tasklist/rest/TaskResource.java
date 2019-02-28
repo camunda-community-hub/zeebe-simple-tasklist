@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,5 +52,19 @@ public class TaskResource {
     zeebeClientService.getClient().newCompleteCommand(key).payload(payload).send().join();
 
     repository.delete(task);
+  }
+
+  @RequestMapping(path = "/{key}/claim", method = RequestMethod.PUT)
+  public void claimTask(@PathVariable("key") long key) {
+
+    final TaskEntity task =
+        repository
+            .findById(key)
+            .orElseThrow(() -> new RuntimeException("No task found with key: " + key));
+
+    final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    task.setAssignee(username);
+
+    repository.save(task);
   }
 }
