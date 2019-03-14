@@ -59,8 +59,8 @@ CHECKSUM="${JAR}.sha1sum"
 # create checksum files
 sha1sum ${JAR} > ${CHECKSUM}
 
-../../github-release upload --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "${JAR}" --file "${JAR}"
-../../github-release upload --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "${CHECKSUM}" --file "${CHECKSUM}"
+./github-release upload --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "${JAR}" --file "${JAR}"
+./github-release upload --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "${CHECKSUM}" --file "${CHECKSUM}"
 '''
 
 // properties used by the release build
