@@ -45,12 +45,6 @@ fi
 def githubRelease = '''\
 #!/bin/bash
 
-# do github release
-curl -sL https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2 | tar xjvf - --strip 3
-
-./github-release release --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "Zeebe Simple Tasklist ${RELEASE_VERSION}" --description ""
-
-
 cd target
 
 JAR="zeebe-simple-tasklist-${RELEASE_VERSION}.jar"
@@ -58,6 +52,11 @@ CHECKSUM="${JAR}.sha1sum"
 
 # create checksum files
 sha1sum ${JAR} > ${CHECKSUM}
+
+# do github release
+curl -sL https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2 | tar xjvf - --strip 3
+
+./github-release release --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "Zeebe Simple Tasklist ${RELEASE_VERSION}" --description ""
 
 ./github-release upload --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "${JAR}" --file "${JAR}"
 ./github-release upload --user zeebe-io --repo zeebe-simple-tasklist --tag ${RELEASE_VERSION} --name "${CHECKSUM}" --file "${CHECKSUM}"
