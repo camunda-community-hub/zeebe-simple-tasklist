@@ -138,7 +138,7 @@ public class ViewController {
 
   private String renderTaskForm(TaskEntity task) {
     try {
-      final Map<String, Object> taskPayload = serializer.readVariables(task.getPayload());
+      final Map<String, Object> taskPayload = serializer.readVariables(task.getVariables());
 
       final Template taskTemplate =
           Optional.ofNullable(task.getTaskForm())

@@ -46,10 +46,10 @@ public class TaskResource {
             .findById(key)
             .orElseThrow(() -> new RuntimeException("No task found with key: " + key));
 
-    final Map<String, Object> payload =
+    final Map<String, Object> result =
         variables.stream().collect(Collectors.toMap(TaskVariable::getKey, TaskVariable::getValue));
 
-    zeebeClientService.getClient().newCompleteCommand(key).payload(payload).send().join();
+    zeebeClientService.getClient().newCompleteCommand(key).variables(result).send().join();
 
     repository.delete(task);
   }
