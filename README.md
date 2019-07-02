@@ -3,23 +3,45 @@ Zeebe Simple Tasklist
 
 A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of type `user` as a task/todo-list. A user can complete the tasks with requested data. 
 
-> This application can be used in development or as a blueprint for your own task-list. It is not designed to be used in production. 
+**Default Task Form**
+
+![screenshot](docs/generic-task-form.png)
+
+**Custom Task Form**
+
+![screenshot](docs/custom-task-form.png)
 
 ## Usage
 
+Example BPMN with service task:
+             
+ ```xml
+ <bpmn:serviceTask id="userTask" name="User Task">
+   <bpmn:extensionElements>
+     <zeebe:taskDefinition type="user" />
+     <zeebe:taskHeaders>
+       <zeebe:header key="name" value="My User Task" />
+       <zeebe:header key="description" value="My first user task with a form field." />
+       <zeebe:header key="formFields" value="[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}]" />
+       <zeebe:header key="assignee" value="demo" />
+     </zeebe:taskHeaders>
+   </bpmn:extensionElements>
+ </bpmn:serviceTask>
+ ```  
+
 * the worker is registered for jobs of type `user`
 * optional custom headers:
-  * `name` (String) - the name of the task _(default: the element id)_
-  * `description` (String) - a description what is the task about
+  * `name` - the name of the task _(default: the element id)_
+  * `description` - a description what is the task about
   * `taskForm` (HTML) - the form to show and provide the task data ([example task form](https://github.com/zeebe-io/zeebe-simple-tasklist/blob/master/src/test/resources/custom-task-form.html))
   * `formFields` (JSON) - the form fields for the default task form, if no task form is set
-  * `assignee` (String) - the name of the user which should be assigned to the task
-  * `candidateGroup` (String) - the name of the group which can claim the task
-* optional variables/payload:
-  * `assignee` (String) - the name of the user which should be assigned to the task, if not set as header
-  * `candidateGroup` (String) - the name of the group which can claim the task, if not set as header
+  * `assignee` - the name of the user which should be assigned to the task
+  * `candidateGroup` - the name of the group which can claim the task
+* optional variables:
+  * `assignee` - the name of the user which should be assigned to the task, if not set as header
+  * `candidateGroup` - the name of the group which can claim the task, if not set as header
   
-**Default Task Form**
+### Default Task Form
 
 If no `taskForm` is defined then the default task form is used. It takes the `formFields` and renders a form with all defined fields. The fields are defined as JSON list, for example:
 
@@ -38,29 +60,9 @@ If no `taskForm` is defined then the default task form is used. It takes the `fo
 
 The `type` must be one of: string, number, boolean.
 
-**Example Service Task**
+## Install
 
-```xml
-<bpmn:serviceTask id="userTask" name="User Task">
-  <bpmn:extensionElements>
-    <zeebe:taskDefinition type="user" />
-    <zeebe:taskHeaders>
-      <zeebe:header key="name" value="My User Task" />
-      <zeebe:header key="description" value="My first user task with a form field." />
-      <zeebe:header key="formFields" value="[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}]" />
-      <zeebe:header key="assignee" value="demo" />
-    </zeebe:taskHeaders>
-  </bpmn:extensionElements>
-</bpmn:serviceTask>
-```
-
-## How to run
-
-1. Download the JAR file from the [download page](https://github.com/zeebe-io/zeebe-simple-tasklist/releases).
-
-	Or build it with Maven
-
-	`mvn clean install`
+1. Download the [JAR file](https://github.com/zeebe-io/zeebe-simple-tasklist/releases).
 
 2. Execute the JAR file via
 
@@ -70,7 +72,7 @@ The `type` must be one of: string, number, boolean.
 
 4. Login with `demo/demo`
 
-## How to configure
+### Configuration
 
 The configuration can be changes via `application.properties`, `application.yaml` or command line arguments.
 
@@ -96,15 +98,11 @@ spring.jpa.hibernate.ddl-auto=update
 server.port = 8081
 ```
 
-## Screenshots
+## Build from Source
 
-**Default Task Form**
+Build with Maven
 
-![screenshot](docs/generic-task-form.png)
-
-**Custom Task Form**
-
-![screenshot](docs/custom-task-form.png)
+`mvn clean install`
 
 ## Code of Conduct
 
@@ -115,6 +113,3 @@ this code. Please report unacceptable behavior to code-of-conduct@zeebe.io.
 ## License
 
 [Apache License, Version 2.0](/LICENSE) 
-
-[broker-core]: https://github.com/zeebe-io/zeebe/tree/master/broker-core
-[agpl]: https://github.com/zeebe-io/zeebe/blob/master/GNU-AGPL-3.0

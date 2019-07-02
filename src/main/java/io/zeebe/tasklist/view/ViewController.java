@@ -73,7 +73,7 @@ public class ViewController {
 
   @GetMapping("/")
   public RedirectView index() {
-    return new RedirectView("/views/my-tasks");
+    return new RedirectView("/views/all-tasks/");
   }
 
   @GetMapping("/views/my-tasks")
@@ -83,9 +83,7 @@ public class ViewController {
     final long count = taskRepository.countByAssignee(username);
 
     final List<TaskDto> tasks =
-        taskRepository
-            .findAllByAssignee(username, pageable)
-            .stream()
+        taskRepository.findAllByAssignee(username, pageable).stream()
             .map(this::toDto)
             .collect(Collectors.toList());
 
@@ -109,9 +107,7 @@ public class ViewController {
     final long count = taskRepository.countByAssignee(username);
 
     final List<TaskDto> tasks =
-        taskRepository
-            .findAllByAssignee(username, pageable)
-            .stream()
+        taskRepository.findAllByAssignee(username, pageable).stream()
             .map(this::toDto)
             .collect(Collectors.toList());
 
@@ -138,7 +134,7 @@ public class ViewController {
 
   private String renderTaskForm(TaskEntity task) {
     try {
-      final Map<String, Object> taskPayload = serializer.readVariables(task.getPayload());
+      final Map<String, Object> taskPayload = serializer.readVariables(task.getVariables());
 
       final Template taskTemplate =
           Optional.ofNullable(task.getTaskForm())
@@ -210,20 +206,23 @@ public class ViewController {
       dto.setCreated("few seconds");
     }
 
+    Optional.ofNullable(entity.getAssignee())
+        .filter(getUsername()::equals)
+        .ifPresent(assignee -> dto.setAssigned(true));
+
     return dto;
   }
 
-  @GetMapping("/views/claimable-tasks")
-  public String claimableTaskList(
+  @GetMapping("/views/all-tasks")
+  public String allTaskList(
       Map<String, Object> model, @PageableDefault(size = 10) Pageable pageable) {
 
+    final String username = getUsername();
     final List<String> groups = getUserGroupNames();
-    final long count = taskRepository.countByClaimable(groups);
+    final long count = taskRepository.countByClaimable(username, groups);
 
     final List<TaskDto> tasks =
-        taskRepository
-            .findAllByClaimable(groups, pageable)
-            .stream()
+        taskRepository.findAllByClaimable(username, groups, pageable).stream()
             .map(this::toDto)
             .collect(Collectors.toList());
 
@@ -233,22 +232,21 @@ public class ViewController {
     addPaginationToModel(model, pageable, count);
     addCommonsToModel(model);
 
-    return "claimable-task-list-view";
+    return "task-list-view";
   }
 
-  @GetMapping("/views/claimable-tasks/{key}")
-  public String claimableTaskList(
+  @GetMapping("/views/all-tasks/{key}")
+  public String allTaskList(
       @PathVariable("key") long key,
       Map<String, Object> model,
       @PageableDefault(size = 10) Pageable pageable) {
 
+    final String username = getUsername();
     final List<String> groups = getUserGroupNames();
-    final long count = taskRepository.countByClaimable(groups);
+    final long count = taskRepository.countByClaimable(username, groups);
 
     final List<TaskDto> tasks =
-        taskRepository
-            .findAllByClaimable(groups, pageable)
-            .stream()
+        taskRepository.findAllByClaimable(username, groups, pageable).stream()
             .map(this::toDto)
             .collect(Collectors.toList());
 
@@ -270,7 +268,7 @@ public class ViewController {
     addPaginationToModel(model, pageable, count);
     addCommonsToModel(model);
 
-    return "claimable-task-list-view";
+    return "task-list-view";
   }
 
   private List<String> getUserGroupNames() {
@@ -278,8 +276,7 @@ public class ViewController {
         .findById(getUsername())
         .map(
             user -> {
-              return user.getGroups()
-                  .stream()
+              return user.getGroups().stream()
                   .map(GroupEntity::getName)
                   .collect(Collectors.toList());
             })
@@ -349,9 +346,7 @@ public class ViewController {
 
     final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     final List<String> authorities =
-        authentication
-            .getAuthorities()
-            .stream()
+        authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toList());
 

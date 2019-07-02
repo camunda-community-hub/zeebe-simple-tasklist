@@ -26,6 +26,8 @@ public class TaskDto {
 
   private boolean active;
 
+  private boolean assigned;
+
   public long getKey() {
     return key;
   }
@@ -64,5 +66,13 @@ public class TaskDto {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public boolean isAssigned() {
+    return assigned;
+  }
+
+  public void setAssigned(boolean assigned) {
+    this.assigned = assigned;
   }
 }

@@ -1,9 +1,8 @@
 package io.zeebe.tasklist;
 
-import io.zeebe.client.api.clients.JobClient;
 import io.zeebe.client.api.response.ActivatedJob;
-import io.zeebe.client.api.response.JobHeaders;
-import io.zeebe.client.api.subscription.JobHandler;
+import io.zeebe.client.api.worker.JobClient;
+import io.zeebe.client.api.worker.JobHandler;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
 import io.zeebe.tasklist.view.FormField;
@@ -35,13 +34,12 @@ public class UserTaskJobHandler implements JobHandler {
 
     entity.setKey(job.getKey());
     entity.setTimestamp(Instant.now().toEpochMilli());
-    entity.setPayload(job.getPayload());
+    entity.setVariables(job.getVariables());
 
-    final JobHeaders headers = job.getHeaders();
-    final Map<String, Object> customHeaders = job.getCustomHeaders();
-    final Map<String, Object> jobPayload = job.getPayloadAsMap();
+    final Map<String, String> customHeaders = job.getCustomHeaders();
+    final Map<String, Object> variables = job.getVariablesAsMap();
 
-    final String name = (String) customHeaders.getOrDefault("name", headers.getElementId());
+    final String name = (String) customHeaders.getOrDefault("name", job.getElementId());
     entity.setName(name);
 
     final String description = (String) customHeaders.getOrDefault("description", "");
@@ -58,11 +56,11 @@ public class UserTaskJobHandler implements JobHandler {
     entity.setTaskForm(taskForm);
 
     final String assignee =
-        (String) customHeaders.getOrDefault("assignee", jobPayload.get("assignee"));
+        customHeaders.getOrDefault("assignee", (String) variables.get("assignee"));
     entity.setAssignee(assignee);
 
     final String candidateGroup =
-        (String) customHeaders.getOrDefault("candidateGroup", jobPayload.get("candidateGroup"));
+        customHeaders.getOrDefault("candidateGroup", (String) variables.get("candidateGroup"));
     entity.setCandidateGroup(candidateGroup);
 
     repository.save(entity);

@@ -27,8 +27,8 @@ public class TaskEntity {
   @Column(name = "KEY_")
   private long key;
 
-  @Column(name = "PAYLOAD_")
-  private String payload;
+  @Column(name = "VARIABLES_")
+  private String variables;
 
   @Column(name = "TIMESTAMP_")
   private long timestamp;
@@ -68,12 +68,12 @@ public class TaskEntity {
     this.timestamp = timestamp;
   }
 
-  public String getPayload() {
-    return payload;
+  public String getVariables() {
+    return variables;
   }
 
-  public void setPayload(String payload) {
-    this.payload = payload;
+  public void setVariables(String variables) {
+    this.variables = variables;
   }
 
   public String getName() {
