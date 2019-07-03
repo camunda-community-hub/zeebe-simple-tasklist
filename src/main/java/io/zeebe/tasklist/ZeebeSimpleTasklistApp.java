@@ -43,7 +43,15 @@ public class ZeebeSimpleTasklistApp {
   @Value("${io.zeebe.tasklist.adminPassword}")
   private String adminPassword;
 
+  @Value("${io.zeebe.tasklist.hazelcastConnection}")
+  private String hazelcastConnection;
+
+  @Value("${io.zeebe.tasklist.hazelcastTopic}")
+  private String hazelcastTopic;
+
   @Autowired private ZeebeClientService zeebeClientService;
+
+  @Autowired private HazelcastService hazelcastService;
 
   @Autowired private UserService userService;
 
@@ -55,6 +63,8 @@ public class ZeebeSimpleTasklistApp {
   public void init() {
     LOG.info("Connecting to Zeebe broker '{}'", connectionString);
     zeebeClientService.connect(connectionString);
+
+    hazelcastService.connect(hazelcastConnection, hazelcastTopic);
 
     if (!adminUsername.isEmpty() && !userService.hasUserWithName(adminUsername)) {
       LOG.info(
