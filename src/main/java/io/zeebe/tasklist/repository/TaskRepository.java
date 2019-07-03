@@ -32,8 +32,9 @@ public interface TaskRepository extends PagingAndSortingRepository<TaskEntity, L
       value =
           "SELECT count(*) "
               + "FROM TASK "
-              + "WHERE ASSIGNEE_ is null and (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
-  long countByClaimable(@Param("groups") Collection<String> groups);
+              + "WHERE ASSIGNEE_ is (:assignee) or (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
+  long countByClaimable(
+      @Param("assignee") String assignee, @Param("groups") Collection<String> groups);
 
   List<TaskEntity> findAllByAssignee(String assignee, Pageable pageable);
 
@@ -42,7 +43,9 @@ public interface TaskRepository extends PagingAndSortingRepository<TaskEntity, L
       value =
           "SELECT * "
               + "FROM TASK "
-              + "WHERE ASSIGNEE_ is null and (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
+              + "WHERE ASSIGNEE_ is (:assignee) or (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
   List<TaskEntity> findAllByClaimable(
-      @Param("groups") Collection<String> groups, Pageable pageable);
+      @Param("assignee") String assignee,
+      @Param("groups") Collection<String> groups,
+      Pageable pageable);
 }

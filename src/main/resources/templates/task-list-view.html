@@ -7,7 +7,26 @@
 	</div>
 
 	<div class="col-md-8">
-		{{>task-details}}
+
+		{{#task}}
+			{{#assigned}}
+				{{>task-details}}
+			{{/assigned}}
+
+			{{^assigned}}
+				{{>claimable-task-details}}
+			{{/assigned}}
+		{{/task}}
+
+		{{^task}}
+			<div class="d-flex justify-content-center">
+				<div>
+					<h3>No task selected.</h3>
+					<span>Select one from the list.</span>
+				</div>
+			</div>
+		{{/task}}
+
 	</div>
 	
 </div>
