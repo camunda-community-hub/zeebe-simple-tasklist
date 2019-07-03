@@ -3,13 +3,7 @@ Zeebe Simple Tasklist
 
 A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of type `user` as a task/todo-list. A user can complete the tasks with requested data. 
 
-**Default Task Form**
-
-![screenshot](docs/generic-task-form.png)
-
-**Custom Task Form**
-
-![screenshot](docs/custom-task-form.png)
+![screencast](docs/zeebe-simple-tasklist.gif)
 
 ## Usage
 
