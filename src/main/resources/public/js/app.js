@@ -39,8 +39,7 @@ function withSecurityToken(url) {
 
 // --------------------------------------------------------------------
 					
-						var stompClient = null;
-						var notifications = 0;
+var stompClient = null;
              
             function connect() {
                 var socket = new SockJS('/notifications');
@@ -64,11 +63,10 @@ function withSecurityToken(url) {
             }
              
             function handleMessage(msg) {
-								var message = msg.message;
-								notifications = notifications + 1;
-								
-								showInfo(notifications + ' ' + message);
-						}
+                var message = msg.message;
+
+                showInfo(message);
+            }
 	
 // --------------------------------------------------------------------
 

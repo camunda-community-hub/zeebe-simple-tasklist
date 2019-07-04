@@ -10,10 +10,14 @@ public class NotificationService {
 
   @Autowired private SimpMessagingTemplate webSocket;
 
-  @Autowired private TaskRepository taskRepository;
-
   public void sendNewTask() {
-    final TaskNotification notification = new TaskNotification("new tasks", taskRepository.count());
+    final TaskNotification notification = new TaskNotification("new tasks");
+
+    webSocket.convertAndSend("/notifications/tasks", notification);
+  }
+
+  public void sendTaskCanceled() {
+    final TaskNotification notification = new TaskNotification("tasks canceled");
 
     webSocket.convertAndSend("/notifications/tasks", notification);
   }

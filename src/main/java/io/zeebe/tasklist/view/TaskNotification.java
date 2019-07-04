@@ -3,11 +3,9 @@ package io.zeebe.tasklist.view;
 public class TaskNotification {
 
   private String message;
-  private long taskCount;
 
-  public TaskNotification(String message, long taskCount) {
+  public TaskNotification(String message) {
     this.setMessage(message);
-    this.setTaskCount(taskCount);
   }
 
   public String getMessage() {
@@ -18,11 +16,4 @@ public class TaskNotification {
     this.message = message;
   }
 
-  public long getTaskCount() {
-    return taskCount;
-  }
-
-  public void setTaskCount(long taskCount) {
-    this.taskCount = taskCount;
-  }
 }
