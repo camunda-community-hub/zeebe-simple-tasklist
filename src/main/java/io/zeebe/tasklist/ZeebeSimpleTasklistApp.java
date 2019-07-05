@@ -43,10 +43,10 @@ public class ZeebeSimpleTasklistApp {
   @Value("${io.zeebe.tasklist.adminPassword}")
   private String adminPassword;
 
-  @Value("${io.zeebe.tasklist.hazelcastConnection}")
+  @Value("${io.zeebe.tasklist.hazelcast.connection}")
   private String hazelcastConnection;
 
-  @Value("${io.zeebe.tasklist.hazelcastTopic}")
+  @Value("${io.zeebe.tasklist.hazelcast.topic}")
   private String hazelcastTopic;
 
   @Autowired private ZeebeClientService zeebeClientService;

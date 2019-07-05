@@ -75,7 +75,7 @@ The configuration can be changes via `application.properties`, `application.yaml
 io.zeebe.tasklist.connectionString=localhost:26500
 
 # Path to the default task form  
-io.zeebe.tasklist.defaultTaskForm=/my-default-task-form.html
+io.zeebe.tasklist.defaultTaskForm=/templates/default-task-form.html
 
 # Admin user
 io.zeebe.tasklist.adminUsername=demo
@@ -86,7 +86,9 @@ spring.datasource.url=jdbc:h2:~/zeebe-tasklist
 spring.datasource.user=sa
 spring.datasource.password=
 
-spring.jpa.hibernate.ddl-auto=update
+# Connection to Hazelcast
+io.zeebe.tasklist.hazelcast.connection=localhost:5701
+io.zeebe.tasklist.hazelcast.topic=zeebe-JOB
 
 # Server settings
 server.port = 8081
