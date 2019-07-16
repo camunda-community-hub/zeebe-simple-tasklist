@@ -3,8 +3,6 @@ Zeebe Simple Tasklist
 
 A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of type `user` as a task/todo-list. A user can complete the tasks with requested data. 
 
-![screencast](docs/zeebe-simple-tasklist.gif)
-
 ## Usage
 
 Example BPMN with service task:
@@ -109,3 +107,7 @@ this code. Please report unacceptable behavior to code-of-conduct@zeebe.io.
 ## License
 
 [Apache License, Version 2.0](/LICENSE) 
+
+## About
+
+![screencast](docs/zeebe-simple-tasklist.gif)
