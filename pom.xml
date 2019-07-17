@@ -4,7 +4,7 @@
 
 	<groupId>io.zeebe</groupId>
 	<artifactId>zeebe-simple-tasklist</artifactId>
-	<version>0.3.0</version>
+	<version>0.4.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -223,7 +223,7 @@
 		<url>https://github.com/zeebe-io/zeebe-simple-tasklist</url>
 		<connection>scm:git:git@github.com:zeebe-io/zeebe-simple-tasklist.git</connection>
 		<developerConnection>scm:git:git@github.com:zeebe-io/zeebe-simple-tasklist.git</developerConnection>
-		<tag>0.3.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 </project>
