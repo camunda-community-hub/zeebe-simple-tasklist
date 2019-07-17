@@ -2,7 +2,7 @@
 
 cd target
 
-export PROJECT_NAME="Zeebe DMN Worker"
+export PROJECT_NAME="Zeebe Simple Tasklist"
 export GITHUB_TOKEN=${GITHUB_TOKEN_PSW}
 export GITHUB_ORG=zeebe-io
 export GITHUB_REPO=zeebe-simple-tasklist
