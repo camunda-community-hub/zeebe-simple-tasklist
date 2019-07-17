@@ -20,9 +20,9 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<zeebe.version>0.19.0</zeebe.version>
+		<zeebe.version>0.20.0</zeebe.version>
 		<spring.boot.version>2.1.2.RELEASE</spring.boot.version>
-		<zeebe-hazelcast.version>0.4.0</zeebe-hazelcast.version>
+		<zeebe-hazelcast.version>0.5.0</zeebe-hazelcast.version>
 
 		<!-- release parent settings -->
 		<version.java>1.8</version.java>
@@ -64,14 +64,6 @@
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
 				<version>1.4.197</version>
-			</dependency>
-
-			<dependency>
-				<groupId>io.netty</groupId>
-				<artifactId>netty-bom</artifactId>
-				<version>4.1.37.Final</version>
-				<scope>import</scope>
-				<type>pom</type>
 			</dependency>
 
 		</dependencies>
@@ -191,18 +183,31 @@
 
 	<profiles>
 		<profile>
-			<id>sonatype-oss-release</id>
+			<id>release</id>
+			<properties>
+				<plugin.version.gpg>1.6</plugin.version.gpg>
+				<gpg.passphrase>${env.GPG_PASS}</gpg.passphrase>
+				<resume>false</resume>
+				<tag>${env.RELEASE_VERSION}</tag>
+				<releaseVersion>${env.RELEASE_VERSION}</releaseVersion>
+				<developmentVersion>${env.DEVELOPMENT_VERSION}</developmentVersion>
+				<arguments>-s .ci/settings.xml -DskipTests</arguments>
+			</properties>
 			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<configuration>
-							<!-- skip gpg signing as the release is not pushed to maven central -->
-							<skip>true</skip>
-						</configuration>
-					</plugin>
-				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-gpg-plugin</artifactId>
+							<configuration>
+								<gpgArguments>
+									<arg>--pinentry-mode</arg>
+									<arg>loopback</arg>
+								</gpgArguments>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
 			</build>
 		</profile>
 	</profiles>
