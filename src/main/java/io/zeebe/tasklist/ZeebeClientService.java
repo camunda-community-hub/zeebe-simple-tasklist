@@ -29,7 +29,8 @@ public class ZeebeClientService {
 
   public void connect(String connectionString) {
 
-    client = ZeebeClient.newClientBuilder().brokerContactPoint(connectionString).build();
+    client =
+        ZeebeClient.newClientBuilder().brokerContactPoint(connectionString).usePlaintext().build();
 
     getClient()
         .newWorker()

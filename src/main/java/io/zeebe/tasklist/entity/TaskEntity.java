@@ -28,6 +28,7 @@ public class TaskEntity {
   private long key;
 
   @Column(name = "VARIABLES_")
+  @Lob
   private String variables;
 
   @Column(name = "TIMESTAMP_")
