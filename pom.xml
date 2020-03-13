@@ -20,7 +20,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <zeebe.version>0.22.1</zeebe.version>
+    <zeebe.version>0.22.2</zeebe.version>
     <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
     <zeebe-hazelcast.version>0.7.0</zeebe-hazelcast.version>
 
