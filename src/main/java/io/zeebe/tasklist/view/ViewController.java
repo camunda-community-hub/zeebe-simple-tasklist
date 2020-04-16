@@ -275,11 +275,8 @@ public class ViewController {
     return userRepository
         .findById(getUsername())
         .map(
-            user -> {
-              return user.getGroups().stream()
-                  .map(GroupEntity::getName)
-                  .collect(Collectors.toList());
-            })
+            user ->
+                user.getGroups().stream().map(GroupEntity::getName).collect(Collectors.toList()))
         .orElse(Collections.emptyList());
   }
 

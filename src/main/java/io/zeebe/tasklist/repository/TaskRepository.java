@@ -27,23 +27,17 @@ public interface TaskRepository extends PagingAndSortingRepository<TaskEntity, L
 
   long countByAssignee(String assignee);
 
-  @Query(
-      nativeQuery = true,
-      value =
-          "SELECT count(*) "
-              + "FROM TASK "
-              + "WHERE ASSIGNEE_ is (:assignee) or (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
-  long countByClaimable(
-      @Param("assignee") String assignee, @Param("groups") Collection<String> groups);
-
   List<TaskEntity> findAllByAssignee(String assignee, Pageable pageable);
 
   @Query(
-      nativeQuery = true,
       value =
-          "SELECT * "
-              + "FROM TASK "
-              + "WHERE ASSIGNEE_ is (:assignee) or (CANDIDATE_GROUP_ is null OR CANDIDATE_GROUP_ in (:groups))")
+          "SELECT count(t) FROM TASK t WHERE t.assignee = :assignee or t.candidateGroup is null OR t.candidateGroup IN :groups")
+  long countByClaimable(
+      @Param("assignee") String assignee, @Param("groups") Collection<String> groups);
+
+  @Query(
+      value =
+          "SELECT t FROM TASK t WHERE t.assignee = :assignee or t.candidateGroup is null OR t.candidateGroup IN :groups")
   List<TaskEntity> findAllByClaimable(
       @Param("assignee") String assignee,
       @Param("groups") Collection<String> groups,
