@@ -20,11 +20,11 @@ public class Demo {
     final BpmnModelInstance workflow =
         Bpmn.createExecutableProcess("demo-process")
             .startEvent()
-            .serviceTask("task-1", t -> t.zeebeTaskType("user"))
+            .serviceTask("task-1", t -> t.zeebeJobType("user"))
             .serviceTask(
                 "task-2",
                 t ->
-                    t.zeebeTaskType("user")
+                    t.zeebeJobType("user")
                         .zeebeTaskHeader("name", "Task 2")
                         .zeebeTaskHeader("description", "Task with form fields")
                         .zeebeTaskHeader(
@@ -33,7 +33,7 @@ public class Demo {
             .serviceTask(
                 "task-3",
                 t ->
-                    t.zeebeTaskType("user")
+                    t.zeebeJobType("user")
                         .zeebeTaskHeader("name", "Task 3")
                         .zeebeTaskHeader("description", "Task with custom form")
                         .zeebeTaskHeader("taskForm", getCustomTaskForm()))
