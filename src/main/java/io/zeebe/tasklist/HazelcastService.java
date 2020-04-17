@@ -23,7 +23,7 @@ public class HazelcastService {
 
   private static final Logger LOG = LoggerFactory.getLogger(HazelcastService.class);
 
-  @Value("${io.zeebe.tasklist.hazelcast.connection}")
+  @Value("${zeebe.worker.hazelcast.connection}")
   private String hazelcastConnection;
 
   @Autowired private NotificationService notificationService;

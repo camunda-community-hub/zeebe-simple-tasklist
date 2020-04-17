@@ -15,7 +15,7 @@
  */
 package io.zeebe.tasklist.rest;
 
-import io.zeebe.tasklist.ZeebeClientService;
+import io.zeebe.client.ZeebeClient;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
 import java.util.List;
@@ -35,7 +35,7 @@ public class TaskResource {
 
   @Autowired private TaskRepository repository;
 
-  @Autowired private ZeebeClientService zeebeClientService;
+  @Autowired private ZeebeClient zeebeClient;
 
   @RequestMapping(path = "/{key}/complete", method = RequestMethod.PUT)
   public void completeTask(
@@ -49,7 +49,7 @@ public class TaskResource {
     final Map<String, Object> result =
         variables.stream().collect(Collectors.toMap(TaskVariable::getKey, TaskVariable::getValue));
 
-    zeebeClientService.getClient().newCompleteCommand(key).variables(result).send().join();
+    zeebeClient.newCompleteCommand(key).variables(result).send().join();
 
     repository.delete(task);
   }

@@ -3,10 +3,12 @@ package io.zeebe.tasklist;
 import io.zeebe.client.api.response.ActivatedJob;
 import io.zeebe.client.api.worker.JobClient;
 import io.zeebe.client.api.worker.JobHandler;
+import io.zeebe.spring.client.annotation.ZeebeWorker;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
 import io.zeebe.tasklist.view.FormField;
 import io.zeebe.tasklist.view.NotificationService;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +30,7 @@ public class UserTaskJobHandler implements JobHandler {
   @Autowired private NotificationService notificationService;
 
   @Override
+  @ZeebeWorker(timeout = 2592000000L) // 30 days
   public void handle(JobClient client, ActivatedJob job) {
 
     final TaskEntity entity = new TaskEntity();
