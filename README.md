@@ -129,16 +129,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-  mustache:
-    prefix: classpath:/templates/
-    suffix: .html
-    expose-request-attributes: true
-
-  data:
-    web:
-      pageable:
-        default-page-size: 10
-
 server:
   port: 8081
 ```
