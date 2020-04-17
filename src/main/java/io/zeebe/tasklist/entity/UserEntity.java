@@ -50,8 +50,13 @@ public class UserEntity implements UserDetails {
   @ManyToMany
   private Set<GroupEntity> groups;
 
-  public void setUsername(String username) {
-    this.username = username;
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return Arrays.stream(roles.split(","))
+        .map(String::trim)
+        .map("ROLE_"::concat)
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -64,17 +69,12 @@ public class UserEntity implements UserDetails {
   }
 
   @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Arrays.stream(roles.split(","))
-        .map(String::trim)
-        .map("ROLE_"::concat)
-        .map(SimpleGrantedAuthority::new)
-        .collect(Collectors.toList());
-  }
-
-  @Override
   public String getUsername() {
     return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   @Override
@@ -116,5 +116,10 @@ public class UserEntity implements UserDetails {
   @Transient
   public String getGroupNames() {
     return groups.stream().map(GroupEntity::getName).collect(Collectors.joining(", "));
+  }
+
+  @Transient
+  public String getName() {
+    return username;
   }
 }
