@@ -44,7 +44,7 @@ public class GroupResource {
   }
 
   @RequestMapping(path = "/{name}", method = RequestMethod.DELETE)
-  public void deleteUser(@PathVariable("name") String name) {
+  public void deleteGroup(@PathVariable("name") String name) {
 
     if (!repository.existsById(name)) {
       throw new RuntimeException(String.format("Group with name '%s' doesn't exist.", name));

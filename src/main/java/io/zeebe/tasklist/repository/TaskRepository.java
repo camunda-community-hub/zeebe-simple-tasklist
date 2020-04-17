@@ -31,13 +31,13 @@ public interface TaskRepository extends PagingAndSortingRepository<TaskEntity, L
 
   @Query(
       value =
-          "SELECT count(t) FROM TASK t WHERE t.assignee = :assignee or t.candidateGroup is null OR t.candidateGroup IN :groups")
+          "SELECT count(t) FROM TASK t WHERE t.assignee = :assignee OR (t.assignee is null AND (t.candidateGroup is null OR t.candidateGroup IN :groups))")
   long countByClaimable(
       @Param("assignee") String assignee, @Param("groups") Collection<String> groups);
 
   @Query(
       value =
-          "SELECT t FROM TASK t WHERE t.assignee = :assignee or t.candidateGroup is null OR t.candidateGroup IN :groups")
+          "SELECT t FROM TASK t WHERE t.assignee = :assignee OR (t.assignee is null AND (t.candidateGroup is null OR t.candidateGroup IN :groups))")
   List<TaskEntity> findAllByClaimable(
       @Param("assignee") String assignee,
       @Param("groups") Collection<String> groups,
