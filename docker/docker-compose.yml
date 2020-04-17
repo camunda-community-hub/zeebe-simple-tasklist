@@ -15,7 +15,7 @@ services:
       - "9600:9600"
       - "5701:5701"
     volumes:
-      - ../target/zeebe-hazelcast-exporter-0.8.0-jar-with-dependencies.jar:/usr/local/zeebe/exporters/zeebe-hazelcast-exporter.jar
+      - ../target/zeebe-hazelcast-exporter.jar:/usr/local/zeebe/exporters/zeebe-hazelcast-exporter.jar
       - ./application.yaml:/usr/local/zeebe/config/application.yaml
     networks:
       - zeebe_network
