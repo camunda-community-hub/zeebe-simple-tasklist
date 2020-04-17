@@ -21,11 +21,18 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <zeebe.version>0.23.0</zeebe.version>
+    <version.zeebe.spring>0.22.0</version.zeebe.spring>
+
     <spring.boot.version>2.2.6.RELEASE</spring.boot.version>
     <zeebe-hazelcast.version>0.8.0</zeebe-hazelcast.version>
 
     <!-- release parent settings -->
     <version.java>11</version.java>
+    <java.version>${version.java}</java.version>
+
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+
     <nexus.snapshot.repository>
       https://app.camunda.com/nexus/content/repositories/zeebe-io-snapshots/
     </nexus.snapshot.repository>
@@ -33,6 +40,7 @@
     </nexus.release.repository>
 
     <!-- disable jdk8 javadoc checks on release build -->
+    <plugin.version.javadoc>3.1.1</plugin.version.javadoc>
     <additionalparam>-Xdoclint:none</additionalparam>
 
   </properties>
@@ -40,6 +48,7 @@
 
   <dependencyManagement>
     <dependencies>
+
       <dependency>
         <groupId>io.zeebe</groupId>
         <artifactId>zeebe-bom</artifactId>
@@ -47,6 +56,7 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -72,20 +82,16 @@
 
   <dependencies>
 
+    <!-- spring deps-->
     <dependency>
-      <groupId>io.zeebe</groupId>
-      <artifactId>zeebe-client-java</artifactId>
+      <groupId>io.zeebe.spring</groupId>
+      <artifactId>spring-zeebe-starter</artifactId>
+      <version>${version.zeebe.spring}</version>
     </dependency>
 
     <dependency>
-      <groupId>io.zeebe.hazelcast</groupId>
-      <artifactId>zeebe-hazelcast-connector</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>compile</scope>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
     <dependency>
@@ -111,6 +117,17 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.zeebe.hazelcast</groupId>
+      <artifactId>zeebe-hazelcast-connector</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -146,11 +163,20 @@
 
   <build>
     <finalName>${project.name}-${project.version}</finalName>
+
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>${version.java}</source>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot.version}</version>
         <executions>
           <execution>
             <goals>
@@ -159,21 +185,18 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>2.1.0</version>
         <configuration>
-          <release>11</release>
+          <to>
+            <image>docker.io/camunda/zeebe-simple-tasklist</image>
+          </to>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <!-- Override java source version to workaround javadoc bug https://bugs.openjdk.java.net/browse/JDK-8212233 -->
-          <source>8</source>
-        </configuration>
-      </plugin>
+
     </plugins>
   </build>
 

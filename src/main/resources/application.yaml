@@ -1,0 +1,51 @@
+zeebe:
+
+  worker:
+    defaultName: zeebe-simple-tasklist
+    defaultType: user
+    threads: 2
+
+    hazelcast:
+      connection: localhost:5701
+
+    tasklist:
+      defaultTaskForm: /templates/default-task-form.html
+      adminUsername: demo
+      adminPassword: demo
+
+  client:
+    job.timeout: 2592000000 # 30 days
+    broker.contactPoint: 127.0.0.1:26500
+    security.plaintext: true
+
+spring:
+
+  datasource:
+    url: jdbc:h2:~/zeebe-tasklist
+    user: sa
+    password:
+    driverClassName: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+  mustache:
+    prefix: classpath:/templates/
+    suffix: .html
+    expose-request-attributes: true
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+
+server:
+  port: 8081
+
+logging:
+  level:
+    root: ERROR
+    io.zeebe: INFO
+    io.zeebe.tasklist: DEBUG

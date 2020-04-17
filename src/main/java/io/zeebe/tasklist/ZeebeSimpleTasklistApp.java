@@ -15,6 +15,7 @@
  */
 package io.zeebe.tasklist;
 
+import io.zeebe.spring.client.EnableZeebeClient;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableZeebeClient
 @EnableScheduling
 @EnableAsync
 @EnableSpringDataWebSupport
@@ -34,16 +36,12 @@ public class ZeebeSimpleTasklistApp {
 
   private static final Logger LOG = LoggerFactory.getLogger(ZeebeSimpleTasklistApp.class);
 
-  @Value("${io.zeebe.tasklist.connectionString}")
-  private String connectionString;
-
-  @Value("${io.zeebe.tasklist.adminUsername}")
+  @Value("${zeebe.worker.tasklist.adminUsername}")
   private String adminUsername;
 
-  @Value("${io.zeebe.tasklist.adminPassword}")
+  @Value("${zeebe.worker.tasklist.adminPassword}")
   private String adminPassword;
 
-  @Autowired private ZeebeClientService zeebeClientService;
   @Autowired private UserService userService;
 
   public static void main(String... args) {
@@ -52,9 +50,6 @@ public class ZeebeSimpleTasklistApp {
 
   @PostConstruct
   public void init() {
-    LOG.info("Connecting to Zeebe broker '{}'", connectionString);
-    zeebeClientService.connect(connectionString);
-
     if (!adminUsername.isEmpty() && !userService.hasUserWithName(adminUsername)) {
       LOG.info(
           "Creating admin user with name '{}' and password '{}'", adminUsername, adminPassword);
