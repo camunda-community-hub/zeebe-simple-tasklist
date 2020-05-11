@@ -22,7 +22,7 @@
     <version.zeebe.spring>0.23.0</version.zeebe.spring>
 
     <spring.boot.version>2.2.7.RELEASE</spring.boot.version>
-    <zeebe-hazelcast.version>0.8.0</zeebe-hazelcast.version>
+    <zeebe-hazelcast.version>0.9.0</zeebe-hazelcast.version>
 
     <!-- release parent settings -->
     <version.java>11</version.java>
