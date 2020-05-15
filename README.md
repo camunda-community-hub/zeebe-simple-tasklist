@@ -97,21 +97,21 @@ By default, the port is set to `8081` and the admin user is created with `demo/d
 
 ```
 zeebe:
-
-  worker:
-    defaultName: zeebe-simple-tasklist
-    defaultType: user
-    threads: 2
-
-    hazelcast:
-      connection: localhost:5701
-
-    tasklist:
-      defaultTaskForm: /templates/default-task-form.html
-      adminUsername: demo
-      adminPassword: demo
-
   client:
+    worker:
+      defaultName: zeebe-simple-tasklist
+      defaultType: user
+      threads: 2
+    
+      hazelcast:
+        connection: localhost:5701
+        connectionTimeout: PT30S
+    
+      tasklist:
+        defaultTaskForm: /templates/default-task-form.html
+        adminUsername: demo
+        adminPassword: demo
+
     job.timeout: 2592000000 # 30 days
     broker.contactPoint: 127.0.0.1:26500
     security.plaintext: true

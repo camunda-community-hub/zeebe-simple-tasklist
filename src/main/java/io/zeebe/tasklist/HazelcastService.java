@@ -10,6 +10,7 @@ import io.zeebe.tasklist.entity.HazelcastConfig;
 import io.zeebe.tasklist.repository.HazelcastConfigRepository;
 import io.zeebe.tasklist.repository.TaskRepository;
 import io.zeebe.tasklist.view.NotificationService;
+import java.time.Duration;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.slf4j.Logger;
@@ -23,8 +24,11 @@ public class HazelcastService {
 
   private static final Logger LOG = LoggerFactory.getLogger(HazelcastService.class);
 
-  @Value("${zeebe.worker.hazelcast.connection}")
+  @Value("${zeebe.client.worker.hazelcast.connection}")
   private String hazelcastConnection;
+
+  @Value("${zeebe.client.worker.hazelcast.connectionTimeout}")
+  private String hazelcastConnectionTimeout;
 
   @Autowired private NotificationService notificationService;
   @Autowired private TaskRepository taskRepository;
@@ -48,6 +52,11 @@ public class HazelcastService {
 
     final ClientConfig clientConfig = new ClientConfig();
     clientConfig.getNetworkConfig().addAddress(hazelcastConnection);
+
+    final var connectionRetryConfig =
+        clientConfig.getConnectionStrategyConfig().getConnectionRetryConfig();
+    connectionRetryConfig.setClusterConnectTimeoutMillis(
+        Duration.parse(hazelcastConnectionTimeout).toMillis());
 
     try {
       LOG.info("Connecting to Hazelcast '{}'", hazelcastConnection);

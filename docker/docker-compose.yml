@@ -19,12 +19,12 @@ services:
       - ./application.yaml:/usr/local/zeebe/config/application.yaml
     networks:
       - zeebe_network
-  monitor:
+  zeebe-simple-tasklist:
     container_name: zeebe-simple-tasklist
     image: camunda/zeebe-simple-tasklist:latest
     environment:
       - zeebe.client.broker.contactPoint=zeebe:26500
-      - zeebe.worker.hazelcast.connection=zeebe:5701
+      - zeebe.client.worker.hazelcast.connection=zeebe:5701
     ports:
       - "8081:8081"
     depends_on:

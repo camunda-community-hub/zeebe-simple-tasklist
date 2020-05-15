@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.zeebe</groupId>
@@ -12,7 +14,7 @@
     <artifactId>camunda-release-parent</artifactId>
     <version>3.7</version>
     <!-- do not remove empty tag - http://jira.codehaus.org/browse/MNG-4687 -->
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <properties>
@@ -23,6 +25,8 @@
 
     <spring.boot.version>2.2.7.RELEASE</spring.boot.version>
     <zeebe-hazelcast.version>0.9.0</zeebe-hazelcast.version>
+    <!-- pin Hazelcast version because of spring-boot-dependencies -->
+    <version.hazelcast>4.0.1</version.hazelcast>
 
     <!-- release parent settings -->
     <version.java>11</version.java>
@@ -55,6 +59,7 @@
         <type>pom</type>
       </dependency>
 
+
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -67,6 +72,12 @@
         <groupId>io.zeebe.hazelcast</groupId>
         <artifactId>zeebe-hazelcast-connector</artifactId>
         <version>${zeebe-hazelcast.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.hazelcast</groupId>
+        <artifactId>hazelcast</artifactId>
+        <version>${version.hazelcast}</version>
       </dependency>
 
       <dependency>
@@ -131,6 +142,7 @@
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator-core</artifactId>
+      <version>0.41</version>
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>
@@ -175,6 +187,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring.boot.version}</version>
         <executions>
           <execution>
             <goals>
