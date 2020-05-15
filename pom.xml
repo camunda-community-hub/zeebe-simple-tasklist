@@ -205,6 +205,11 @@
           <to>
             <image>docker.io/camunda/zeebe-simple-tasklist</image>
           </to>
+          <container>
+            <ports>
+              <port>8081</port>
+            </ports>
+          </container>
         </configuration>
       </plugin>
 
