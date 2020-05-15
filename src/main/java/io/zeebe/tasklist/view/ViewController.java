@@ -42,7 +42,7 @@ public class ViewController {
 
   private final TaskDataSerializer serializer = new TaskDataSerializer();
 
-  @Value("${zeebe.worker.tasklist.defaultTaskForm}")
+  @Value("${zeebe.client.worker.tasklist.defaultTaskForm}")
   private String defaultTaskForm;
 
   @Autowired private TaskRepository taskRepository;

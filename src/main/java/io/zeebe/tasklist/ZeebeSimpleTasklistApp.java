@@ -36,10 +36,10 @@ public class ZeebeSimpleTasklistApp {
 
   private static final Logger LOG = LoggerFactory.getLogger(ZeebeSimpleTasklistApp.class);
 
-  @Value("${zeebe.worker.tasklist.adminUsername}")
+  @Value("${zeebe.client.worker.tasklist.adminUsername}")
   private String adminUsername;
 
-  @Value("${zeebe.worker.tasklist.adminPassword}")
+  @Value("${zeebe.client.worker.tasklist.adminPassword}")
   private String adminPassword;
 
   @Autowired private UserService userService;
