@@ -24,7 +24,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,12 +37,10 @@ public class UserEntity implements UserDetails {
   @Column(name = "NAME_")
   private String username;
 
-  @Column(name = "PASSWORD_")
-  @NotNull
+  @Column(name = "PASSWORD_", nullable = false)
   private String password;
 
-  @Column(name = "ROLES_")
-  @NotNull
+  @Column(name = "ROLES_", nullable = false)
   private String roles = "";
 
   @Column(name = "GROUPS_")
