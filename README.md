@@ -65,7 +65,7 @@ docker pull camunda/zeebe-simple-tasklist:latest
 * ensure that a Zeebe broker is running with a Hazelcast exporter (>= 0.8.0-alpha1)  
 * forward the Hazelcast port to the docker container (default: `5701`)
 * configure the connection to the Zeebe broker by setting `zeebe.client.broker.contactPoint` (default: `localhost:26500`) 
-* configure the connection to Hazelcast by setting `zeebe.worker.hazelcast.connection` (default: `localhost:5701`) 
+* configure the connection to Hazelcast by setting `zeebe.client.worker.hazelcast.connection` (default: `localhost:5701`) 
 
 For a local setup, the repository contains a [docker-compose file](docker/docker-compose.yml). It starts a Zeebe broker with the Hazelcast exporter and the worker. 
 
