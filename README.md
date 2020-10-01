@@ -1,9 +1,9 @@
-Zeebe Simple Tasklist
+Zeebe Simple Tasklist --
 =========================
 
 A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of type `user` as a task/todo-list. A user can complete the tasks with requested data. 
 
-## Usage
+## Usage --
 
 Example BPMN with service task:
              
@@ -33,7 +33,7 @@ Example BPMN with service task:
   * `assignee` - the name of the user which should be assigned to the task, if not set as header
   * `candidateGroup` - the name of the group which can claim the task, if not set as header
   
-### Default Task Form
+### Default Task Form --
 
 If no `taskForm` is defined then the default task form is used. It takes the `formFields` and renders a form with all defined fields. The fields are defined as JSON list, for example:
 
@@ -52,9 +52,9 @@ If no `taskForm` is defined then the default task form is used. It takes the `fo
 
 The `type` must be one of: string, number, boolean.
 
-## Install
+## Install --
 
-### Docker
+### Docker --
 
 The docker image for the worker is published to [DockerHub](https://hub.docker.com/r/camunda/zeebe-simple-tasklist).
 
@@ -75,7 +75,7 @@ cd docker
 docker-compose up
 ```
 
-### Manual
+### Manual --
 
 1. Download the latest [worker JAR](https://github.com/zeebe-io/zeebe-simple-tasklist/releases) _(zeebe-simple-tasklist-%{VERSION}.jar
 )_
@@ -87,7 +87,7 @@ docker-compose up
 
 1. Login with `demo/demo`
 
-### Configuration
+### Configuration --
 
 The worker is a Spring Boot application that uses the [Spring Zeebe Starter](https://github.com/zeebe-io/spring-zeebe). The configuration can be changed via environment variables or an `application.yaml` file. See also the following resources:
 * [Spring Zeebe Configuration](https://github.com/zeebe-io/spring-zeebe#configuring-zeebe-connection)
@@ -133,22 +133,22 @@ server:
   port: 8081
 ```
 
-## Build from Source
+## Build from Source --
 
 Build with Maven
 
 `mvn clean install`
 
-## Code of Conduct
+## Code of Conduct --
 
 This project adheres to the Contributor Covenant [Code of
 Conduct](/CODE_OF_CONDUCT.md). By participating, you are expected to uphold
 this code. Please report unacceptable behavior to code-of-conduct@zeebe.io.
 
-## License
+## License --
 
 [Apache License, Version 2.0](/LICENSE) 
 
-## About
+## About --
 
 ![screencast](docs/zeebe-simple-tasklist.gif)
