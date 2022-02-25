@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0gd225o" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="1.1.0">
+  <bpmn:process id="Process_162pre5" name="Zeebe审批流程" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="userTaskForm_1mn07dc">{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Text Field",
+      "type": "textfield",
+      "id": "Field_1bavcnh",
+      "key": "field_0iiy0yx"
+    }
+  ],
+  "type": "default",
+  "id": "Form_1n1sjma",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "1.3"
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0r87u6s</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0r87u6s" sourceRef="StartEvent_1" targetRef="Activity_0mebq8z" />
+    <bpmn:endEvent id="Event_1y8cd9f">
+      <bpmn:incoming>Flow_0w9j5ts</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0w9j5ts" sourceRef="Activity_0mebq8z" targetRef="Event_1y8cd9f" />
+    <bpmn:userTask id="Activity_0mebq8z" name="审批">
+      <bpmn:extensionElements>
+        <zeebe:assignmentDefinition assignee="demo" />
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_1mn07dc" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0r87u6s</bpmn:incoming>
+      <bpmn:outgoing>Flow_0w9j5ts</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_162pre5">
+      <bpmndi:BPMNEdge id="Flow_0r87u6s_di" bpmnElement="Flow_0r87u6s">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w9j5ts_di" bpmnElement="Flow_0w9j5ts">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="432" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1y8cd9f_di" bpmnElement="Event_1y8cd9f">
+        <dc:Bounds x="432" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1tfiozv_di" bpmnElement="Activity_0mebq8z">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
