@@ -15,7 +15,7 @@ zeebe:
         adminPassword: demo
 
     job.timeout: 2592000000 # 30 days
-    broker.gateway-address: 127.0.0.1:26500
+    broker.gatewayAddress: 127.0.0.1:26500
     security.plaintext: true
 
 spring:
