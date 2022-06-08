@@ -36,7 +36,7 @@
     <nexus.snapshot.repository>
       https://artifacts.camunda.com/artifactory/zeebe-io-snapshots/
     </nexus.snapshot.repository>
-    <nexus.release.repository> https://artifacts.camunda.com/artifactory/zeebe-io/
+    <nexus.release.repository>https://artifacts.camunda.com/artifactory/zeebe-io/
     </nexus.release.repository>
 
     <!-- disable jdk8 javadoc checks on release build -->
