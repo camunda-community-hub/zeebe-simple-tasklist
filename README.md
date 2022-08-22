@@ -8,8 +8,8 @@ Zeebe Simple Tasklist
 [![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)](https://github.com/camunda-community-hub/community/blob/main/extension-lifecycle.md#compatiblilty)
 [![](https://img.shields.io/badge/Maintainer%20Wanted-This%20extension%20is%20in%20search%20of%20a%20Maintainer-ff69b4)](https://github.com/camunda-community-hub/community/blob/main/extension-lifecycle.md)
 
-A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of
-type `user` as a task/todo-list. A user can complete the tasks with requested data.
+A [Zeebe](https://zeebe.io) worker to manage user tasks in a workflow. It shows all jobs of
+the user task's type as a task/todo-list. A user can complete the tasks with requested data.
 
 ## Usage
 
@@ -37,13 +37,6 @@ Example BPMN with a user task:
     * `taskForm` (HTML) - the form to show and provide the task
       data ([example task form](https://github.com/zeebe-io/zeebe-simple-tasklist/blob/master/src/test/resources/custom-task-form.html))
     * `formFields` (JSON) - the form fields for the default task form, if no task form is set
-    * `assignee`¹ - the name of the user which should be assigned to the task
-    * `candidateGroups`¹ - a list of group names which can claim the task
-* optional variables:
-    * `assignee`¹ - the name of the user which should be assigned to the task, if not set as header 
-    * `candidateGroup`¹ - the name of the group which can claim the task, if not set as header 
-
-¹ - _deprecated, use the user task properties instead_
 
 ### Default Task Form
 
