@@ -8,41 +8,47 @@ Zeebe Simple Tasklist
 [![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)](https://github.com/camunda-community-hub/community/blob/main/extension-lifecycle.md#compatiblilty)
 [![](https://img.shields.io/badge/Maintainer%20Wanted-This%20extension%20is%20in%20search%20of%20a%20Maintainer-ff69b4)](https://github.com/camunda-community-hub/community/blob/main/extension-lifecycle.md)
 
-A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of type `user` as a task/todo-list. A user can complete the tasks with requested data. 
+A [Zeebe](https://zeebe.io) worker to manage manual/user tasks in a workflow. It shows all jobs of
+type `user` as a task/todo-list. A user can complete the tasks with requested data.
 
 ## Usage
 
-Example BPMN with service task:
-             
+Example BPMN with a user task:
+
  ```xml
- <bpmn:serviceTask id="userTask" name="User Task">
-   <bpmn:extensionElements>
-     <zeebe:taskDefinition type="user" />
-     <zeebe:taskHeaders>
-       <zeebe:header key="name" value="My User Task" />
-       <zeebe:header key="description" value="My first user task with a form field." />
-       <zeebe:header key="formFields" value="[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}]" />
-       <zeebe:header key="assignee" value="demo" />
-     </zeebe:taskHeaders>
-   </bpmn:extensionElements>
- </bpmn:serviceTask>
+
+<bpmn:userTask id="userTask" name="User Task">
+  <bpmn:extensionElements>
+    <zeebe:taskHeaders>
+      <zeebe:header key="name" value="My User Task"/>
+      <zeebe:header key="description" value="My first user task with a form field."/>
+      <zeebe:header key="formFields" value="[{\" key\":\"orderId\", \"label\":\"Order Id\",
+      \"type\":\"string\"}]" />
+      <zeebe:assignmentDefinition assignee="demo" />
+    </zeebe:taskHeaders>
+  </bpmn:extensionElements>
+</bpmn:userTask>
  ```  
 
-* the worker is registered for jobs of type `user`
+* the worker is registered for jobs of type `io.camunda.zeebe:userTask` (the reserved job type of user tasks)
 * optional custom headers:
-  * `name` - the name of the task _(default: the element id)_
-  * `description` - a description what is the task about
-  * `taskForm` (HTML) - the form to show and provide the task data ([example task form](https://github.com/zeebe-io/zeebe-simple-tasklist/blob/master/src/test/resources/custom-task-form.html))
-  * `formFields` (JSON) - the form fields for the default task form, if no task form is set
-  * `assignee` - the name of the user which should be assigned to the task
-  * `candidateGroup` - the name of the group which can claim the task
+    * `name` - the name of the task _(default: the element id)_
+    * `description` - a description what is the task about
+    * `taskForm` (HTML) - the form to show and provide the task
+      data ([example task form](https://github.com/zeebe-io/zeebe-simple-tasklist/blob/master/src/test/resources/custom-task-form.html))
+    * `formFields` (JSON) - the form fields for the default task form, if no task form is set
+    * `assignee`¹ - the name of the user which should be assigned to the task
+    * `candidateGroups`¹ - a list of group names which can claim the task
 * optional variables:
-  * `assignee` - the name of the user which should be assigned to the task, if not set as header
-  * `candidateGroup` - the name of the group which can claim the task, if not set as header
-  
+    * `assignee`¹ - the name of the user which should be assigned to the task, if not set as header 
+    * `candidateGroup`¹ - the name of the group which can claim the task, if not set as header 
+
+¹ - _deprecated, use the user task properties instead_
+
 ### Default Task Form
 
-If no `taskForm` is defined then the default task form is used. It takes the `formFields` and renders a form with all defined fields. The fields are defined as JSON list, for example:
+If no `taskForm` is defined then the default task form is used. It takes the `formFields` and
+renders a form with all defined fields. The fields are defined as JSON list, for example:
 
 ```
 [{
@@ -63,32 +69,56 @@ The `type` must be one of: string, number, boolean.
 
 ### Docker
 
-The docker image for the worker is published to [DockerHub](https://hub.docker.com/r/camunda/zeebe-simple-tasklist).
+The docker image for the worker is published
+to [GitHub Packages](https://github.com/orgs/camunda-community-hub/packages/container/package/zeebe-simple-tasklist)
+.
 
 ```
-docker pull camunda/zeebe-simple-tasklist:latest
+docker pull ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.0
 ```
 
-* ensure that a Zeebe broker is running with a Hazelcast exporter (>= 0.8.0-alpha1)  
+* ensure that a Zeebe broker is running with
+  a [Hazelcast exporter](https://github.com/camunda-community-hub/zeebe-hazelcast-exporter#install) (>
+  = `1.0.0`)
 * forward the Hazelcast port to the docker container (default: `5701`)
-* configure the connection to the Zeebe broker by setting `zeebe.client.broker.contactPoint` (default: `localhost:26500`) 
-* configure the connection to Hazelcast by setting `zeebe.client.worker.hazelcast.connection` (default: `localhost:5701`) 
+* configure the connection to the Zeebe broker by setting `zeebe.client.broker.gateway-address` (
+  default: `localhost:26500`)
+* configure the connection to Hazelcast by setting `zeebe.client.worker.hazelcast.connection` (
+  default: `localhost:5701`)
 
-For a local setup, the repository contains a [docker-compose file](docker/docker-compose.yml). It starts a Zeebe broker with the Hazelcast exporter and the worker. 
+If the Zeebe broker runs on your local machine with the default configs then start the container
+with the following command:
+
+```
+docker run --network="host" ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.0
+```
+
+For a local setup, the repository contains a [docker-compose file](docker/docker-compose.yml). It
+starts a Zeebe broker with the Hazelcast exporter and the application.
 
 ```
 mvn clean install -DskipTests
 cd docker
-docker-compose up
+docker-compose --profile in-memory up
+```
+
+Go to http://localhost:8081
+
+To use PostgreSQL instead of the in-memory database, use the profile `postgres`.
+
+```
+docker-compose --profile postgres up
 ```
 
 ### Manual
 
-1. Download the latest [worker JAR](https://github.com/zeebe-io/zeebe-simple-tasklist/releases) _(zeebe-simple-tasklist-%{VERSION}.jar
-)_
+1. Download the
+   latest [application JAR](https://github.com/zeebe-io/zeebe-simple-tasklist/releases) _(
+   zeebe-simple-tasklist-%{VERSION}.jar
+   )_
 
-1. Start the worker
-	`java -jar zeebe-simple-tasklist-{VERSION}.jar`
+1. Start the application
+   `java -jar zeebe-simple-tasklist-{VERSION}.jar`
 
 1. Go to http://localhost:8081
 
@@ -96,11 +126,15 @@ docker-compose up
 
 ### Configuration
 
-The worker is a Spring Boot application that uses the [Spring Zeebe Starter](https://github.com/zeebe-io/spring-zeebe). The configuration can be changed via environment variables or an `application.yaml` file. See also the following resources:
+The worker is a Spring Boot application that uses
+the [Spring Zeebe Starter](https://github.com/zeebe-io/spring-zeebe). The configuration can be
+changed via environment variables or an `application.yaml` file. See also the following resources:
+
 * [Spring Zeebe Configuration](https://github.com/zeebe-io/spring-zeebe#configuring-zeebe-connection)
 * [Spring Boot Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config)
 
-By default, the port is set to `8081` and the admin user is created with `demo/demo`.
+By default, the port is set to `8081`, the admin user is created with `demo/demo`, and the database
+is only in-memory (i.e. not persistent).
 
 ```
 zeebe:
@@ -140,6 +174,25 @@ server:
   port: 8081
 ```
 
+#### Change the Database
+
+For example, using PostgreSQL:
+
+* change the following database configuration settings
+
+```
+- spring.datasource.url=jdbc:postgresql://db:5432/postgres
+- spring.datasource.username=postgres
+- spring.datasource.password=zeebe
+- spring.datasource.driverClassName=org.postgresql.Driver
+- spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+```
+
+* the PostgreSQL database driver is already bundled
+
+See the [docker-compose file](docker/docker-compose.yml) (profile: `postgres`) for a sample
+configuration with PostgreSQL.
+
 ## Build from Source
 
 Build with Maven
@@ -154,7 +207,7 @@ this code. Please report unacceptable behavior to code-of-conduct@zeebe.io.
 
 ## License
 
-[Apache License, Version 2.0](/LICENSE) 
+[Apache License, Version 2.0](/LICENSE)
 
 ## About
 
