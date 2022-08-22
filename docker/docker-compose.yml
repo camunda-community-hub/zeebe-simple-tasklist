@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 networks:
   zeebe_network:
@@ -7,21 +7,19 @@ networks:
 services:
   zeebe:
     container_name: zeebe_broker
-    image: camunda/zeebe:0.23.0
+    image: ghcr.io/camunda-community-hub/zeebe-with-hazelcast-exporter:8.0.5
     environment:
       - ZEEBE_LOG_LEVEL=debug
     ports:
       - "26500:26500"
       - "9600:9600"
       - "5701:5701"
-    volumes:
-      - ../target/exporter/zeebe-hazelcast-exporter.jar:/usr/local/zeebe/exporters/zeebe-hazelcast-exporter.jar
-      - ./application.yaml:/usr/local/zeebe/config/application.yaml
     networks:
       - zeebe_network
-  zeebe-simple-tasklist:
-    container_name: zeebe-simple-tasklist
-    image: camunda/zeebe-simple-tasklist:latest
+
+  zeebe-simple-tasklist-in-memory:
+    container_name: zeebe-simple-tasklist-in-memory
+    image: ghcr.io/camunda-community-hub/zeebe-simple-tasklist:latest
     environment:
       - zeebe.client.broker.contactPoint=zeebe:26500
       - zeebe.client.worker.hazelcast.connection=zeebe:5701
@@ -31,3 +29,42 @@ services:
       - zeebe
     networks:
       - zeebe_network
+    profiles:
+      - in-memory
+
+  zeebe-simple-tasklist-postgres:
+    container_name: zeebe-simple-tasklist-postgres
+    image: ghcr.io/camunda-community-hub/zeebe-simple-tasklist:latest
+    environment:
+      - zeebe.client.broker.gateway-address=zeebe:26500
+      - zeebe.client.worker.hazelcast.connection=zeebe:5701
+      - spring.datasource.url=jdbc:postgresql://postgres-zeebe-simple-tasklist:5432/postgres
+      - spring.datasource.username=postgres
+      - spring.datasource.password=zeebe
+      - spring.datasource.driverClassName=org.postgresql.Driver
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8082:8082"
+    depends_on:
+      - zeebe
+      - postgres-zeebe-simple-tasklist
+    networks:
+      - zeebe_network
+    profiles:
+      - postgres
+
+  postgres-zeebe-simple-tasklist:
+    image: postgres:12.2
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: zeebe
+    volumes:
+      - postgres-zeebe-simple-tasklist-data:/var/lib/postgresql/data
+    networks:
+      - zeebe_network
+    profiles:
+      - postgres
+
+volumes:
+  postgres-zeebe-simple-tasklist-data:
+    driver: local
