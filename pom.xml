@@ -84,12 +84,6 @@
         <version>2.1.214</version>
       </dependency>
 
-      <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-        <scope>runtime</scope>
-      </dependency>
-
     </dependencies>
   </dependencyManagement>
 
@@ -141,6 +135,12 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <!-- to be bundled into the docker file, for convenience, see issue #89 -->
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
     </dependency>
 
     <dependency>
