@@ -67,7 +67,7 @@ to [GitHub Packages](https://github.com/orgs/camunda-community-hub/packages/cont
 .
 
 ```
-docker pull ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.0
+docker pull ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.1
 ```
 
 * ensure that a Zeebe broker is running with
@@ -83,7 +83,7 @@ If the Zeebe broker runs on your local machine with the default configs then sta
 with the following command:
 
 ```
-docker run --network="host" ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.0
+docker run --network="host" ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.1
 ```
 
 For a local setup, the repository contains a [docker-compose file](docker/docker-compose.yml). It

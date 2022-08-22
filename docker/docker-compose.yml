@@ -19,7 +19,7 @@ services:
 
   zeebe-simple-tasklist-in-memory:
     container_name: zeebe-simple-tasklist-in-memory
-    image: ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.0-snapshot
+    image: ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.1
     environment:
       - zeebe.client.broker.gateway-address=zeebe:26500
       - zeebe.client.worker.hazelcast.connection=zeebe:5701
@@ -34,7 +34,7 @@ services:
 
   zeebe-simple-tasklist-postgres:
     container_name: zeebe-simple-tasklist-postgres
-    image: ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.0-snapshot
+    image: ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.1
     environment:
       - zeebe.client.broker.gateway-address=zeebe:26500
       - zeebe.client.worker.hazelcast.connection=zeebe:5701
