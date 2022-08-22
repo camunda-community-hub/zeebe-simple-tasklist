@@ -1,21 +1,25 @@
 package io.zeebe.tasklist;
 
-import io.zeebe.client.api.response.ActivatedJob;
-import io.zeebe.client.api.worker.JobClient;
-import io.zeebe.client.api.worker.JobHandler;
-import io.zeebe.spring.client.annotation.ZeebeWorker;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.worker.JobClient;
+import io.camunda.zeebe.client.api.worker.JobHandler;
+import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
 import io.zeebe.tasklist.view.FormField;
 import io.zeebe.tasklist.view.NotificationService;
-import java.time.Duration;
+import java.util.Collections;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component
 public class UserTaskJobHandler implements JobHandler {
@@ -23,7 +27,11 @@ public class UserTaskJobHandler implements JobHandler {
   private static final List<String> SUPPORTED_FIELD_TYPES =
       Arrays.asList("string", "number", "boolean");
 
+  private static final TypeReference<List<String>> CANDIDATE_GROUPS_TYPE = new TypeReference<>() {};
+
   private final TaskDataSerializer serializer = new TaskDataSerializer();
+
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired private TaskRepository repository;
 
@@ -58,17 +66,42 @@ public class UserTaskJobHandler implements JobHandler {
     final String taskForm = (String) customHeaders.get("taskForm");
     entity.setTaskForm(taskForm);
 
-    final String assignee =
-        customHeaders.getOrDefault("assignee", (String) variables.get("assignee"));
+    final String assignee = readAssignee(customHeaders, variables);
     entity.setAssignee(assignee);
 
-    final String candidateGroup =
-        customHeaders.getOrDefault("candidateGroup", (String) variables.get("candidateGroup"));
-    entity.setCandidateGroup(candidateGroup);
+    // TODO: handle more than one candidate group
+    final List<String> candidateGroups = readCandidateGroups(customHeaders, variables);
+    if (candidateGroups.size() >= 1) {
+      entity.setCandidateGroup(candidateGroups.get(0));
+    }
 
     repository.save(entity);
 
     notificationService.sendNewTask();
+  }
+
+  private static String readAssignee(
+      final Map<String, String> customHeaders, final Map<String, Object> variables) {
+    return customHeaders.getOrDefault(
+        "io.camunda.zeebe:assignee", (String) variables.get("assignee"));
+  }
+
+  private List<String> readCandidateGroups(
+      final Map<String, String> customHeaders, final Map<String, Object> variables) {
+    final String candidateGroupsAsString =
+        customHeaders.getOrDefault(
+            "io.camunda.zeebe:candidateGroups", (String) variables.get("candidateGroups"));
+
+    if (candidateGroupsAsString == null || candidateGroupsAsString.isBlank()) {
+      return Collections.emptyList();
+    }
+
+    try {
+      return objectMapper.readValue(candidateGroupsAsString, CANDIDATE_GROUPS_TYPE);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(
+          "Fail to parse candidateGroup '%s'".formatted(candidateGroupsAsString));
+    }
   }
 
   private void validateFormFields(String form) {

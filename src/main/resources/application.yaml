@@ -2,7 +2,7 @@ zeebe:
   client:
     worker:
       defaultName: zeebe-simple-tasklist
-      defaultType: user
+      defaultType: io.camunda.zeebe:userTask
       threads: 2
 
       hazelcast:
@@ -15,7 +15,7 @@ zeebe:
         adminPassword: demo
 
     job.timeout: 2592000000 # 30 days
-    broker.contactPoint: 127.0.0.1:26500
+    broker.gateway-address: 127.0.0.1:26500
     security.plaintext: true
 
 spring:
@@ -41,11 +41,14 @@ spring:
       pageable:
         default-page-size: 10
 
+  main:
+    allow-circular-references: true
+
 server:
   port: 8081
 
 logging:
   level:
     root: ERROR
-    io.zeebe: INFO
+    io.camunda: INFO
     io.zeebe.tasklist: DEBUG

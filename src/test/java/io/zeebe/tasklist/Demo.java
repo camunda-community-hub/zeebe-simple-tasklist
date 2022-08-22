@@ -1,8 +1,8 @@
 package io.zeebe.tasklist;
 
-import io.zeebe.client.ZeebeClient;
-import io.zeebe.model.bpmn.Bpmn;
-import io.zeebe.model.bpmn.BpmnModelInstance;
+import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.model.bpmn.Bpmn;
+import io.camunda.zeebe.model.bpmn.BpmnModelInstance;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -15,31 +15,29 @@ public class Demo {
 
   public static void main(String[] args) {
 
-    final ZeebeClient client = ZeebeClient.newClient();
+    final ZeebeClient client = ZeebeClient.newClientBuilder().usePlaintext().build();
 
-    final BpmnModelInstance workflow =
+    final BpmnModelInstance process =
         Bpmn.createExecutableProcess("demo-process")
             .startEvent()
-            .serviceTask("task-1", t -> t.zeebeJobType("user"))
-            .serviceTask(
+            .userTask("task-1")
+            .userTask(
                 "task-2",
                 t ->
-                    t.zeebeJobType("user")
-                        .zeebeTaskHeader("name", "Task 2")
+                    t.zeebeTaskHeader("name", "Task 2")
                         .zeebeTaskHeader("description", "Task with form fields")
                         .zeebeTaskHeader(
                             "formFields",
                             "[{\"key\":\"orderId\", \"label\":\"Order Id\", \"type\":\"string\"}, {\"key\":\"price\", \"label\":\"Price\", \"type\":\"number\"}]"))
-            .serviceTask(
+            .userTask(
                 "task-3",
                 t ->
-                    t.zeebeJobType("user")
-                        .zeebeTaskHeader("name", "Task 3")
+                    t.zeebeTaskHeader("name", "Task 3")
                         .zeebeTaskHeader("description", "Task with custom form")
                         .zeebeTaskHeader("taskForm", getCustomTaskForm()))
             .done();
 
-    client.newDeployCommand().addWorkflowModel(workflow, "demoProcess.bpmn").send().join();
+    client.newDeployResourceCommand().addProcessModel(process, "demoProcess.bpmn").send().join();
 
     IntStream.range(0, 3)
         .forEach(
@@ -48,7 +46,6 @@ public class Demo {
               variables.put("task-nr", i);
               // variables.put("assignee", "user1");
               // variables.put("candidateGroup", "group1");
-
               client
                   .newCreateInstanceCommand()
                   .bpmnProcessId("demo-process")
