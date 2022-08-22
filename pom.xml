@@ -198,10 +198,19 @@
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>jib-maven-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <phase>deploy</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <to>
-            <image>docker.io/camunda/zeebe-simple-tasklist</image>
+            <image>ghcr.io/camunda-community-hub/zeebe-simple-tasklist</image>
+            <tags>${project.version}</tags>
           </to>
           <container>
             <ports>
