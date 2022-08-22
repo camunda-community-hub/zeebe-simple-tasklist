@@ -1,21 +1,22 @@
 package io.zeebe.tasklist;
 
-import io.zeebe.client.api.response.ActivatedJob;
-import io.zeebe.client.api.worker.JobClient;
-import io.zeebe.client.api.worker.JobHandler;
-import io.zeebe.spring.client.annotation.ZeebeWorker;
+
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.worker.JobClient;
+import io.camunda.zeebe.client.api.worker.JobHandler;
+import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
 import io.zeebe.tasklist.entity.TaskEntity;
 import io.zeebe.tasklist.repository.TaskRepository;
 import io.zeebe.tasklist.view.FormField;
 import io.zeebe.tasklist.view.NotificationService;
-import java.time.Duration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component
 public class UserTaskJobHandler implements JobHandler {
@@ -59,11 +60,11 @@ public class UserTaskJobHandler implements JobHandler {
     entity.setTaskForm(taskForm);
 
     final String assignee =
-        customHeaders.getOrDefault("assignee", (String) variables.get("assignee"));
+        customHeaders.getOrDefault("io.camunda.zeebe:assignee", (String) variables.get("assignee"));
     entity.setAssignee(assignee);
 
     final String candidateGroup =
-        customHeaders.getOrDefault("candidateGroup", (String) variables.get("candidateGroup"));
+        customHeaders.getOrDefault("io.camunda.zeebe:candidateGroup", (String) variables.get("candidateGroup"));
     entity.setCandidateGroup(candidateGroup);
 
     repository.save(entity);

@@ -1,8 +1,10 @@
 package io.zeebe.tasklist;
 
-import io.zeebe.client.ZeebeClient;
-import io.zeebe.model.bpmn.Bpmn;
-import io.zeebe.model.bpmn.BpmnModelInstance;
+
+import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.model.bpmn.Bpmn;
+import io.camunda.zeebe.model.bpmn.BpmnModelInstance;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -39,7 +41,7 @@ public class Demo {
                         .zeebeTaskHeader("taskForm", getCustomTaskForm()))
             .done();
 
-    client.newDeployCommand().addWorkflowModel(workflow, "demoProcess.bpmn").send().join();
+    client.newDeployCommand().addProcessModel(workflow, "demoProcess.bpmn").send().join();
 
     IntStream.range(0, 3)
         .forEach(

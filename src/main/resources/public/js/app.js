@@ -40,33 +40,32 @@ function withSecurityToken(url) {
 // --------------------------------------------------------------------
 					
 var stompClient = null;
-             
-            function connect() {
-                var socket = new SockJS('/notifications');
-                stompClient = Stomp.over(socket);  
-                stompClient.connect({}, function(frame) {
-                    stompClient.subscribe('/notifications/tasks', function(message) {
-                      handleMessage(JSON.parse(message.body));
-                    });
-                });
-            }
-             
-            function disconnect() {
-                if(stompClient != null) {
-                    stompClient.disconnect();
-                }
-            }
-             
-            function sendMessage(msg) {
-                stompClient.send("/notifications", {}, 
-                  JSON.stringify(msg));
-            }
-             
-            function handleMessage(msg) {
-                var message = msg.message;
 
-                showInfo(message);
-            }
+function connect() {
+   var socket = new SockJS('/notifications');
+   stompClient = Stomp.over(socket);
+   stompClient.connect({}, function(frame) {
+      stompClient.subscribe('/notifications/tasks', function(message) {
+            handleMessage(JSON.parse(message.body));
+      });
+   });
+}
+
+function disconnect() {
+    if(stompClient != null) {
+        stompClient.disconnect();
+    }
+}
+
+function sendMessage(msg) {
+    stompClient.send("/notifications", {},
+    JSON.stringify(msg));
+}
+
+function handleMessage(msg) {
+    var message = msg.message;
+    showInfo(message);
+}
 	
 // --------------------------------------------------------------------
 

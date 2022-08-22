@@ -15,7 +15,7 @@
  */
 package io.zeebe.tasklist;
 
-import io.zeebe.spring.client.EnableZeebeClient;
+import io.camunda.zeebe.spring.client.EnableZeebeClient;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
