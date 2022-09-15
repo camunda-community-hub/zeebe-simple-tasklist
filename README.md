@@ -165,6 +165,32 @@ spring:
 
 server:
   port: 8081
+  servlet:
+    context-path: /  
+```
+
+#### Change the Context-Path
+
+The context-path or base-path of the application can be changed using the following property:
+
+``` 
+server:
+  servlet:
+    context-path: /tasklist/
+```
+
+It is then available under http://localhost:8081/tasklist.
+
+#### Customize the Look & Feel
+
+You can customize the look & feel of the Zeebe Simple Tasklist (aka. white-labeling). For example, to change the logo or
+alter the background color. The following configurations are available:
+
+```
+- white-label.logo.path=img/logo.png
+- white-label.custom.title=Zeebe Simple Tasklist
+- white-label.custom.css.path=css/custom.css
+- white-label.custom.js.path=js/custom.js
 ```
 
 #### Change the Database

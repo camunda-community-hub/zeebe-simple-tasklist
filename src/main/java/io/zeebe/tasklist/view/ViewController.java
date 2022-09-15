@@ -2,7 +2,6 @@ package io.zeebe.tasklist.view;
 
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
-import io.zeebe.tasklist.Roles;
 import io.zeebe.tasklist.TaskDataSerializer;
 import io.zeebe.tasklist.entity.GroupEntity;
 import io.zeebe.tasklist.entity.TaskEntity;
@@ -10,6 +9,17 @@ import io.zeebe.tasklist.entity.UserEntity;
 import io.zeebe.tasklist.repository.GroupRepository;
 import io.zeebe.tasklist.repository.TaskRepository;
 import io.zeebe.tasklist.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -17,28 +27,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
-public class ViewController {
+public class ViewController extends AbstractViewController {
 
   private final TaskDataSerializer serializer = new TaskDataSerializer();
 
@@ -73,7 +66,7 @@ public class ViewController {
 
   @GetMapping("/")
   public RedirectView index() {
-    return new RedirectView("/views/all-tasks/");
+    return new RedirectView("./views/all-tasks/");
   }
 
   @GetMapping("/views/my-tasks")
@@ -91,6 +84,7 @@ public class ViewController {
     model.put("count", count);
 
     addPaginationToModel(model, pageable, count);
+    addDefaultAttributesToModel(model);
     addCommonsToModel(model);
 
     return "task-list-view";
@@ -127,6 +121,7 @@ public class ViewController {
     model.put("count", count);
 
     addPaginationToModel(model, pageable, count);
+    addDefaultAttributesToModel(model);
     addCommonsToModel(model);
 
     return "task-list-view";
@@ -230,6 +225,7 @@ public class ViewController {
     model.put("count", count);
 
     addPaginationToModel(model, pageable, count);
+    addDefaultAttributesToModel(model);
     addCommonsToModel(model);
 
     return "task-list-view";
@@ -266,6 +262,7 @@ public class ViewController {
     model.put("count", count);
 
     addPaginationToModel(model, pageable, count);
+    addDefaultAttributesToModel(model);
     addCommonsToModel(model);
 
     return "task-list-view";
@@ -300,6 +297,7 @@ public class ViewController {
     model.put("availableGroups", groupNames);
 
     addPaginationToModel(model, pageable, count);
+    addDefaultAttributesToModel(model);
     addCommonsToModel(model);
 
     return "user-view";
@@ -320,40 +318,10 @@ public class ViewController {
     model.put("count", count);
 
     addPaginationToModel(model, pageable, count);
+    addDefaultAttributesToModel(model);
     addCommonsToModel(model);
 
     return "group-view";
-  }
-
-  private void addPaginationToModel(
-      Map<String, Object> model, Pageable pageable, final long count) {
-
-    final int currentPage = pageable.getPageNumber();
-    model.put("currentPage", currentPage);
-    model.put("page", currentPage + 1);
-    if (currentPage > 0) {
-      model.put("prevPage", currentPage - 1);
-    }
-    if (count > (1 + currentPage) * pageable.getPageSize()) {
-      model.put("nextPage", currentPage + 1);
-    }
-  }
-
-  private void addCommonsToModel(Map<String, Object> model) {
-
-    final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    final List<String> authorities =
-        authentication.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());
-
-    final UserDto userDto = new UserDto();
-    userDto.setName(authentication.getName());
-
-    final boolean isAdmin = authorities.contains("ROLE_" + Roles.ADMIN);
-    userDto.setAdmin(isAdmin);
-
-    model.put("user", userDto);
   }
 
   private String getUsername() {

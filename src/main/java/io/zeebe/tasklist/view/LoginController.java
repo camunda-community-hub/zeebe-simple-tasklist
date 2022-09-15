@@ -5,10 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class LoginController {
+public class LoginController extends AbstractViewController {
 
   @GetMapping("/login")
   public String login(Map<String, Object> model) {
+
+    addDefaultAttributesToModel(model);
     return "login";
   }
 
@@ -16,7 +18,7 @@ public class LoginController {
   public String loginError(Map<String, Object> model) {
 
     model.put("error", "Username or password is invalid.");
-
+    addDefaultAttributesToModel(model);
     return "login";
   }
 }
