@@ -19,12 +19,12 @@ public class NotificationService {
   public void sendNewTask() {
     final TaskNotification notification = new TaskNotification("new tasks");
 
-    webSocket.convertAndSend(basePath +"/notifications/tasks", notification);
+    webSocket.convertAndSend(basePath +"notifications/tasks", notification);
   }
 
   public void sendTaskCanceled() {
     final TaskNotification notification = new TaskNotification("tasks canceled");
 
-    webSocket.convertAndSend(basePath +"/notifications/tasks", notification);
+    webSocket.convertAndSend(basePath +"notifications/tasks", notification);
   }
 }
