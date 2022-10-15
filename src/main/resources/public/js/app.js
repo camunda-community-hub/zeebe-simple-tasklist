@@ -23,6 +23,10 @@ function showErrorResonse(xhr, ajaxOptions, thrownError) {
 	}	
 }
 
+function buildPath(resource) {
+    return base_path + resource;
+}
+
 // --------------------------------------------------------------------
 
 function reload() {
@@ -33,8 +37,7 @@ function reload() {
 function withSecurityToken(url) {
 
 	var csrf = document.getElementById("_csrf").value;
-
-	return url + '?_csrf=' + csrf
+	return base_path + url + '?_csrf=' + csrf
 }
 
 // --------------------------------------------------------------------
@@ -42,10 +45,10 @@ function withSecurityToken(url) {
 var stompClient = null;
 
 function connect() {
-   var socket = new SockJS('/notifications');
+   var socket = new SockJS(buildPath('notifications'));
    stompClient = Stomp.over(socket);
    stompClient.connect({}, function(frame) {
-      stompClient.subscribe('/notifications/tasks', function(message) {
+      stompClient.subscribe(buildPath('notifications/tasks'), function(message) {
             handleMessage(JSON.parse(message.body));
       });
    });
@@ -58,7 +61,7 @@ function disconnect() {
 }
 
 function sendMessage(msg) {
-    stompClient.send("/notifications", {},
+    stompClient.send(buildPath('notifications'), {},
     JSON.stringify(msg));
 }
 
@@ -75,7 +78,7 @@ function completeTask(data) {
 
 	$.ajax({
        type : 'PUT',
-       url: withSecurityToken('/api/tasks/' + taskKey + '/complete'),
+       url: withSecurityToken('api/tasks/' + taskKey + '/complete'),
        data:  JSON.stringify(data),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
@@ -95,7 +98,7 @@ function claimTask(taskKey) {
 
 	$.ajax({
        type : 'PUT',
-       url: withSecurityToken('/api/tasks/' + taskKey + '/claim'),
+       url: withSecurityToken('api/tasks/' + taskKey + '/claim'),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
        	showSuccess("Task claimed. (Key: " + taskKey + ")");	
@@ -122,7 +125,7 @@ function createUser() {
 
 	$.ajax({
        type : 'POST',
-       url: withSecurityToken('/api/users/'),
+       url: withSecurityToken('api/users/'),
        data:  JSON.stringify(data),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
@@ -142,7 +145,7 @@ function deleteUser(username) {
 
 	$.ajax({
        type : 'DELETE',
-       url: withSecurityToken('/api/users/' + username),
+       url: withSecurityToken('api/users/' + username),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
        	showSuccess("User deleted. (Username: " + username + ")");	
@@ -172,7 +175,7 @@ function updateGroupMemberships(username) {
 	
 	$.ajax({
        type : 'PUT',
-       url: withSecurityToken('/api/users/' + username + '/group-memberships'),
+       url: withSecurityToken('api/users/' + username + '/group-memberships'),
        data: JSON.stringify(groups),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
@@ -194,7 +197,7 @@ function createGroup() {
 
 	$.ajax({
        type : 'POST',
-       url: withSecurityToken('/api/groups/'),
+       url: withSecurityToken('api/groups/'),
        data:  name,
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
@@ -214,7 +217,7 @@ function deleteGroup(name) {
 
 	$.ajax({
        type : 'DELETE',
-       url: withSecurityToken('/api/groups/' + name),
+       url: withSecurityToken('api/groups/' + name),
        contentType: 'application/json; charset=utf-8',
        success: function (result) {
        	showSuccess("Group deleted. (Name: " + name + ")");	

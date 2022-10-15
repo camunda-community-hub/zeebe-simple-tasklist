@@ -145,8 +145,8 @@
 
     <dependency>
       <groupId>org.webjars</groupId>
-      <artifactId>webjars-locator-core</artifactId>
-      <version>0.52</version>
+      <artifactId>webjars-locator</artifactId>
+      <version>0.42</version>
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>

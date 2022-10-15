@@ -1,14 +1,17 @@
 </div>
 
+<script>var base_path = "{{context-path}}";</script>
+
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/popper.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
+<script src="{{context-path}}js/jquery-3.3.1.min.js"></script>
+<script src="{{context-path}}js/popper.min.js"></script>
+<script src="{{context-path}}js/bootstrap.min.js"></script>
 
-<script src="/webjars/sockjs-client/sockjs.min.js"></script>
-<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script src="{{context-path}}webjars/sockjs-client/sockjs.min.js"></script>
+<script src="{{context-path}}webjars/stomp-websocket/stomp.min.js"></script>
 
-<script src="/js/app.js"></script>
+<script src="{{context-path}}js/app.js"></script>
+<script src="{{context-path}}{{custom-js-path}}"></script>
 
 </body>
 </html>
