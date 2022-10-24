@@ -24,7 +24,7 @@
     <spring.boot.version>2.7.4</spring.boot.version>
     <zeebe-hazelcast.version>1.2.1</zeebe-hazelcast.version>
     <!-- pin Hazelcast version because of spring-boot-dependencies -->
-    <version.hazelcast>5.1.4</version.hazelcast>
+    <version.hazelcast>5.2.0</version.hazelcast>
 
     <!-- release parent settings -->
     <version.java>17</version.java>
