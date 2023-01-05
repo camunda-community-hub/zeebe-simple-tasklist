@@ -17,10 +17,6 @@ package io.zeebe.tasklist;
 
 import io.camunda.zeebe.spring.client.EnableZeebeClient;
 import javax.annotation.PostConstruct;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
