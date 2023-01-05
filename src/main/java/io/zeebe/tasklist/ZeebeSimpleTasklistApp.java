@@ -51,6 +51,9 @@ public class ZeebeSimpleTasklistApp {
   @Value("${zeebe.client.worker.tasklist.adminPassword}")
   private String adminPassword;
 
+  @Value("${server.allowedOriginsUrls}")
+  private String allowedOriginsUrls;
+
   @Autowired private UserService userService;
 
   public static void main(String... args) {

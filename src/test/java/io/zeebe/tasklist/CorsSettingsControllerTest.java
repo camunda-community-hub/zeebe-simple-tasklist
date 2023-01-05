@@ -1,11 +1,11 @@
-package io.zeebe.monitor.rest;
+package io.zeebe.tasklist.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import io.zeebe.monitor.repository.HazelcastConfigRepository;
-import io.zeebe.monitor.zeebe.ZeebeHazelcastService;
+import io.zeebe.tasklist.repository.HazelcastConfigRepository;
+import io.zeebe.tasklist.HazelcastService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "server.allowedOriginsUrls: http://www.someurl.com",
-        "logging.level.io.zeebe.monitor: info",
+        "logging.level.io.zeebe.tasklist: info",
     })
 @AutoConfigureMockMvc
 @ActiveProfiles("junittest")
@@ -33,7 +33,7 @@ public class CorsSettingsControllerTest {
   @MockBean
   protected HazelcastConfigRepository hazelcastConfigRepository;
   @MockBean
-  protected ZeebeHazelcastService zeebeHazelcastService;
+  protected HazelcastService zeebeHazelcastService;
 
   @Test
   public void access_control_origin_request_header_is_checked() throws Exception {
