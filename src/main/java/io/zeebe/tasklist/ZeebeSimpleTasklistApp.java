@@ -17,15 +17,24 @@ package io.zeebe.tasklist;
 
 import io.camunda.zeebe.spring.client.EnableZeebeClient;
 import javax.annotation.PostConstruct;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @EnableZeebeClient
@@ -55,5 +64,19 @@ public class ZeebeSimpleTasklistApp {
           "Creating admin user with name '{}' and password '{}'", adminUsername, adminPassword);
       userService.newAdminUser(adminUsername, adminPassword);
     }
+  }
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    final String urls = this.allowedOriginsUrls;
+    return new WebMvcConfigurerAdapter() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        if (StringUtils.hasText(urls)) {
+          String[] allowedOriginsUrlArr = urls.split(";");
+          registry.addMapping("/**").allowedOrigins(allowedOriginsUrlArr);
+        }
+      }
+    };
   }
 }
