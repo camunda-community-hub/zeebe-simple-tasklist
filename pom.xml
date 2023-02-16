@@ -18,7 +18,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <zeebe.version>8.1.7</zeebe.version>
+    <zeebe.version>8.1.8</zeebe.version>
     <version.zeebe.spring>8.1.16</version.zeebe.spring>
 
     <spring.boot.version>2.7.8</spring.boot.version>
