@@ -44,7 +44,7 @@ services:
       - spring.datasource.driverClassName=org.postgresql.Driver
       - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
     ports:
-      - "8082:8082"
+      - "8081:8081"
     depends_on:
       - zeebe
       - postgres-zeebe-simple-tasklist

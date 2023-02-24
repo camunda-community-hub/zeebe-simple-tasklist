@@ -67,7 +67,7 @@ to [GitHub Packages](https://github.com/orgs/camunda-community-hub/packages/cont
 .
 
 ```
-docker pull ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.1
+docker pull ghcr.io/camunda-community-hub/zeebe-simple-tasklist:latest
 ```
 
 * ensure that a Zeebe broker is running with
@@ -83,14 +83,13 @@ If the Zeebe broker runs on your local machine with the default configs then sta
 with the following command:
 
 ```
-docker run --network="host" ghcr.io/camunda-community-hub/zeebe-simple-tasklist:1.0.1
+docker run --network="host" ghcr.io/camunda-community-hub/zeebe-simple-tasklist:latest
 ```
 
 For a local setup, the repository contains a [docker-compose file](docker/docker-compose.yml). It
 starts a Zeebe broker with the Hazelcast exporter and the application.
 
 ```
-mvn clean install -DskipTests
 cd docker
 docker-compose --profile in-memory up
 ```
