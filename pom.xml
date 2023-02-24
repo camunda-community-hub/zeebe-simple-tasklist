@@ -273,38 +273,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.5.0</version>
-        <executions>
-          <execution>
-            <id>copy</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <artifactItems>
-            <artifactItem>
-              <groupId>io.zeebe.hazelcast</groupId>
-              <artifactId>zeebe-hazelcast-exporter</artifactId>
-              <version>${zeebe-hazelcast.version}</version>
-              <type>jar</type>
-              <classifier>jar-with-dependencies</classifier>
-              <overWrite>true</overWrite>
-              <outputDirectory>${project.build.directory}/exporter</outputDirectory>
-              <destFileName>zeebe-hazelcast-exporter.jar</destFileName>
-            </artifactItem>
-          </artifactItems>
-          <outputDirectory>${project.build.directory}/libs</outputDirectory>
-          <overWriteReleases>false</overWriteReleases>
-          <overWriteSnapshots>true</overWriteSnapshots>
-        </configuration>
-      </plugin>
-
     </plugins>
   </build>
 
