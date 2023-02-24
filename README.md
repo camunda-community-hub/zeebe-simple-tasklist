@@ -167,6 +167,7 @@ server:
   port: 8081
   servlet:
     context-path: /  
+  allowedOriginsUrls: ""
 ```
 
 #### Change the Context-Path
@@ -211,6 +212,18 @@ For example, using PostgreSQL:
 
 See the [docker-compose file](docker/docker-compose.yml) (profile: `postgres`) for a sample
 configuration with PostgreSQL.
+
+#### Cross Origin Requests
+
+To enable Simple Monitor to send CORS header with every HTTP response,
+add the allowed origins (`;` separated) in the following property:
+
+``` 
+server:
+  allowedOriginsUrls: http://remote-hoste:8082;https://remote-hoste:8082
+```
+
+This will then set ```Access-Control-Allow-Origin``` headers in every HTTP response.
 
 ## Build from Source
 

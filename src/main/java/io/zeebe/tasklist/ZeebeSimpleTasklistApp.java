@@ -23,9 +23,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @EnableZeebeClient
@@ -42,6 +47,9 @@ public class ZeebeSimpleTasklistApp {
   @Value("${zeebe.client.worker.tasklist.adminPassword}")
   private String adminPassword;
 
+  @Value("${server.allowedOriginsUrls}")
+  private String allowedOriginsUrls;
+
   @Autowired private UserService userService;
 
   public static void main(String... args) {
@@ -55,5 +63,19 @@ public class ZeebeSimpleTasklistApp {
           "Creating admin user with name '{}' and password '{}'", adminUsername, adminPassword);
       userService.newAdminUser(adminUsername, adminPassword);
     }
+  }
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    final String urls = this.allowedOriginsUrls;
+    return new WebMvcConfigurerAdapter() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        if (StringUtils.hasText(urls)) {
+          String[] allowedOriginsUrlArr = urls.split(";");
+          registry.addMapping("/**").allowedOrigins(allowedOriginsUrlArr);
+        }
+      }
+    };
   }
 }
