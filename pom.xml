@@ -4,7 +4,7 @@
 
   <groupId>io.zeebe</groupId>
   <artifactId>zeebe-simple-tasklist</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.1.0</version>
   <packaging>jar</packaging>
 
   <parent>
