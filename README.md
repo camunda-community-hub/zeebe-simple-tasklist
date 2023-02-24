@@ -215,12 +215,12 @@ configuration with PostgreSQL.
 
 #### Cross Origin Requests
 
-To enable Simple Monitor to send CORS header with every HTTP response,
+To enable Simple Tasklist to send CORS header with every HTTP response,
 add the allowed origins (`;` separated) in the following property:
 
 ``` 
 server:
-  allowedOriginsUrls: http://remote-hoste:8082;https://remote-hoste:8082
+  allowedOriginsUrls: http://localhost:8081;https://tasklist.cloud-provider.io:8081
 ```
 
 This will then set ```Access-Control-Allow-Origin``` headers in every HTTP response.
