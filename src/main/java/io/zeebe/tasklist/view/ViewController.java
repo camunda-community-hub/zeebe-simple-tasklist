@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -31,6 +32,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@Transactional
 public class ViewController extends AbstractViewController {
 
   private final TaskDataSerializer serializer = new TaskDataSerializer();
