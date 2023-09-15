@@ -17,7 +17,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <zeebe.version>8.1.9</zeebe.version>
     <version.zeebe.spring>8.2.4</version.zeebe.spring>
 
     <spring.boot.version>2.7.15</spring.boot.version>
@@ -47,15 +46,6 @@
 
   <dependencyManagement>
     <dependencies>
-
-      <dependency>
-        <groupId>io.camunda</groupId>
-        <artifactId>zeebe-bom</artifactId>
-        <version>${zeebe.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -128,6 +118,13 @@
     <dependency>
       <groupId>io.zeebe.hazelcast</groupId>
       <artifactId>zeebe-hazelcast-connector</artifactId>
+      <exclusions>
+        <exclusion>
+          <!-- Exclude protobuf because of version conflicts with Spring-Zeebe -->
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
