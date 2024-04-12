@@ -7,7 +7,8 @@ Zeebe Simple Tasklist
 
 [![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)](https://github.com/camunda-community-hub/community/blob/main/extension-lifecycle.md#compatiblilty)
 
-> :warning: **This project is outdated. It is not related to the official Tasklist component in Camunda 8, nor the APIs**. Please refer to the official documentation on how to build a custom task applicatio [here.](https://docs.camunda.io/docs/next/apis-tools/frontend-development/task-applications/introduction-to-task-applications/) We do not recommend using this project, since it does not use most recent APIs of Camunda 8.
+> [!CAUTION]
+> **This project is outdated. It is not related to the official Tasklist component in Camunda 8, nor the APIs**. Please refer to the official documentation on how to build a custom task application [here.](https://docs.camunda.io/docs/next/apis-tools/frontend-development/task-applications/introduction-to-task-applications/) We do not recommend using this project, since it does not use most recent APIs of Camunda 8.
 
 ---
 
