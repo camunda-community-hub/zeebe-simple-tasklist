@@ -2,14 +2,13 @@ Zeebe Simple Tasklist
 =========================
 
 [![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
-[![](https://img.shields.io/badge/Lifecycle-Deprecated-yellowgreen)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#deprecated-)
+[![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 [![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)](https://github.com/camunda-community-hub/community/blob/main/extension-lifecycle.md#compatiblilty)
 
-> [!CAUTION]
-> **This project is outdated. It is not related to the official Tasklist component in Camunda 8, nor the APIs**. Please refer to the official documentation on how to build a custom task application [here.](https://docs.camunda.io/docs/next/apis-tools/frontend-development/task-applications/introduction-to-task-applications/) We do not recommend using this project, since it does not use most recent APIs of Camunda 8.
-
+> [!NOTE]
+> **This project is aimed towards advanced developers. It is not related to the official Tasklist component in Camunda 8, nor the APIs**. In case you are getting started with Camunda, please refer to the official documentation on how to build a custom task application [here.](https://docs.camunda.io/docs/next/apis-tools/frontend-development/task-applications/introduction-to-task-applications/) This project uses job workers as an alternative to the APIs and to Zeebe user tasks.
 ---
 
 A [Zeebe](https://zeebe.io) worker to manage user tasks in a workflow. It shows all jobs of
