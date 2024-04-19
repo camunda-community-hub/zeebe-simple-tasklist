@@ -2,17 +2,23 @@ Zeebe Simple Tasklist
 =========================
 
 [![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
-[![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
+[![](https://img.shields.io/badge/Lifecycle-Deprecated-yellowgreen)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#deprecated-)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 [![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)](https://github.com/camunda-community-hub/community/blob/main/extension-lifecycle.md#compatiblilty)
 
-> [!NOTE]
-> **This project is aimed towards advanced developers. It is not related to the official Tasklist component in Camunda 8, nor the APIs**. In case you are getting started with Camunda, please refer to the official documentation on how to build a custom task application [here.](https://docs.camunda.io/docs/next/apis-tools/frontend-development/task-applications/introduction-to-task-applications/) This project uses job workers as an alternative to the APIs and to Zeebe user tasks.
----
+> **Warning**
+> This community extension is deprecated. It doesn't support all the features of newer Camunda versions. You should prefer the official [Camunda Tasklist](https://docs.camunda.io/docs/components/tasklist/introduction-to-tasklist/) that is available in Camunda SaaS and for self-managed. Further resources:
+> - [Documentation](https://docs.camunda.io/docs/components/tasklist/introduction-to-tasklist/)
+> - [How to build a custom task application](https://docs.camunda.io/docs/next/apis-tools/frontend-development/task-applications/introduction-to-task-applications/)
+>
+> Thank you to all [contributors](https://github.com/camunda-community-hub/zeebe-simple-tasklist/graphs/contributors) for making it a great extension. :tada:
 
 A [Zeebe](https://zeebe.io) worker to manage user tasks in a workflow. It shows all jobs of
 the user task's type as a task/todo-list. A user can complete the tasks with requested data.
+
+> **Note**
+> This community project is not related to the **official** [Camunda Tasklist](https://docs.camunda.io/docs/components/tasklist/introduction-to-tasklist/) component in Camunda 8, nor the APIs. If you're looking for the Camunda Tasklist, check out the [Camunda documentation](https://docs.camunda.io/docs/components/tasklist/introduction-to-tasklist/).  
 
 ## Usage
 
